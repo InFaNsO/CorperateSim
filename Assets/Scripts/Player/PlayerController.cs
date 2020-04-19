@@ -5,8 +5,12 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] Transform cameraTransform = null;
+    [SerializeField] float TurnSpeed = 5.0f;
     [SerializeField] float MoveSpeed = 10.0f;
     [SerializeField] float RunBost = 1.5f;
+
+    Camera myCamera = null;
 
     Animator myAnimator = null;
     string mainEnum = "MainEnum";
@@ -34,6 +38,8 @@ public class PlayerController : MonoBehaviour
         playerInput.MoveAction.Crouch.canceled += ctx => IsCrouching = false;
         playerInput.MoveAction.Jump.started += ctx => IsJumping = true;
         playerInput.MoveAction.Jump.canceled += ctx => IsJumping = false;
+
+        myCamera = GetComponentInChildren<Camera>();
     }
 
     void Start()
@@ -43,13 +49,15 @@ public class PlayerController : MonoBehaviour
     
     void Update()
     {
+        float moveForward = movementInput.y * MoveSpeed * Time.deltaTime;
+
         //for jump
         if (IsJumping && Time.time > nextJumpTime)
         {
             nextJumpTime = Time.time + JumpDuration;
             myAnimator.SetTrigger(jumpTrig);
         }
-        else if (movementInput.sqrMagnitude < 0.1f)
+        else if (movementInput.sqrMagnitude < 0.1f && !IsCrouching)
         {
             if (!IsJumping && Time.time > nextJumpTime && currentAnim != 0 && !IsCrouching)
             {
@@ -57,28 +65,32 @@ public class PlayerController : MonoBehaviour
                 myAnimator.SetInteger(mainEnum, currentAnim);
             }
         }
+        else if(IsRunning && IsCrouching)
+        {
+            if(currentAnim == 2 && !myAnimator.GetBool(sliding))
+            {
+                myAnimator.SetTrigger(slideTrig);
+            }
+            myAnimator.SetBool(sliding, IsCrouching);
+            moveForward *= RunBost * 2.0f;
+        }
         else
         {
             Vector3 move = new Vector3(movementInput.x, 0.0f, movementInput.y) * MoveSpeed * Time.deltaTime;
 
-            if (IsRunning)
+            if (IsRunning && !IsCrouching)
             {
-                if (IsCrouching)
+                moveForward *= RunBost;
+                if(myAnimator.GetBool(sliding))
                 {
-                    myAnimator.SetTrigger(slideTrig);
                     myAnimator.SetBool(sliding, IsCrouching);
-                    move *= RunBost * 2.0f;
                 }
-                else
+                else if (currentAnim != 2)
                 {
-                    move *= RunBost;
-                    myAnimator.SetBool(sliding, IsCrouching);
-                    if (currentAnim != 2)
-                    {
-                        currentAnim = 2;
-                        myAnimator.SetInteger(mainEnum, currentAnim);
-                    }
+                    currentAnim = 2;
+                    myAnimator.SetInteger(mainEnum, currentAnim);
                 }
+            
             }
             else
             {
@@ -88,8 +100,15 @@ public class PlayerController : MonoBehaviour
                     myAnimator.SetInteger(mainEnum, currentAnim);
                 }
             }
-            transform.Translate(move);
+            if (movementInput.x != 0.0f)
+            {
+                //transform.Rotate(Vector3.up, movementInput.x * TurnSpeed);
+            }
         }
+
+        Vector3 delta = new Vector3(cameraTransform.forward.x, 0.0f, cameraTransform.forward.z);
+        transform.LookAt(transform.position + delta.normalized);
+        transform.position += transform.forward * moveForward;
     }
 
     private void OnEnable()
@@ -99,5 +118,12 @@ public class PlayerController : MonoBehaviour
     private void OnDisable()
     {
         playerInput.Disable();
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawLine(transform.position, transform.position + transform.forward * 5.0f);
+        Gizmos.DrawWireSphere(transform.position + transform.forward * 5.0f, 0.20f);
     }
 }

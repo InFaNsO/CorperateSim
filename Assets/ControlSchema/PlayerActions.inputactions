@@ -36,6 +36,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Look",
+                    "type": "PassThrough",
+                    "id": "62d7ca71-8e2e-4b38-bb25-05a8d35fec50",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -168,6 +176,17 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c4221b5f-d189-4cea-a74b-bd8bea75db12",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamePad",
+                    "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
