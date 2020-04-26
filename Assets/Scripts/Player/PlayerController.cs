@@ -38,8 +38,6 @@ public class PlayerController : MonoBehaviour
         playerInput.MoveAction.Crouch.canceled += ctx => IsCrouching = false;
         playerInput.MoveAction.Jump.started += ctx => IsJumping = true;
         playerInput.MoveAction.Jump.canceled += ctx => IsJumping = false;
-
-        myCamera = GetComponentInChildren<Camera>();
     }
 
     void Start()
@@ -57,13 +55,18 @@ public class PlayerController : MonoBehaviour
             nextJumpTime = Time.time + JumpDuration;
             myAnimator.SetTrigger(jumpTrig);
         }
-        else if (movementInput.sqrMagnitude < 0.1f && !IsCrouching)
+        else if (Mathf.Abs(movementInput.y) < 0.1f && !IsCrouching)
         {
             if (!IsJumping && Time.time > nextJumpTime && currentAnim != 0 && !IsCrouching)
             {
                 currentAnim = 0;
                 myAnimator.SetInteger(mainEnum, currentAnim);
             }
+        }
+        else if (movementInput.y < 0.0f)
+        {
+            currentAnim = 3;
+            myAnimator.SetInteger(mainEnum, currentAnim);
         }
         else if(IsRunning && IsCrouching)
         {
@@ -76,7 +79,6 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Vector3 move = new Vector3(movementInput.x, 0.0f, movementInput.y) * MoveSpeed * Time.deltaTime;
 
             if (IsRunning && !IsCrouching)
             {
