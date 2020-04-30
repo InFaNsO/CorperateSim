@@ -32,7 +32,7 @@ public class @PlayerActions : IInputActionCollection, IDisposable
                     ""id"": ""1e105bed-9a3f-40ae-b86c-f27bdcb43ba9"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Hold""
                 },
                 {
                     ""name"": ""Jump"",
@@ -40,7 +40,7 @@ public class @PlayerActions : IInputActionCollection, IDisposable
                     ""id"": ""49f790ff-a2b5-40f0-9967-c7ff57c2fc41"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Tap""
                 },
                 {
                     ""name"": ""Crouch"",

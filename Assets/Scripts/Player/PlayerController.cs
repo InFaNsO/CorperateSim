@@ -107,6 +107,10 @@ public class PlayerController : MonoBehaviour
                 //transform.Rotate(Vector3.up, movementInput.x * TurnSpeed);
             }
         }
+        if(!IsCrouching && myAnimator.GetBool(sliding))
+        {
+            myAnimator.SetBool(sliding, false);
+        }
 
         Vector3 delta = new Vector3(cameraTransform.forward.x, 0.0f, cameraTransform.forward.z);
         transform.LookAt(transform.position + delta.normalized);
