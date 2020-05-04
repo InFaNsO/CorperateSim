@@ -28,6 +28,9 @@ public class PlayerController : MonoBehaviour
     float nextJumpTime = 0.0f;
     int currentAnim = 0;
 
+    Transform startBeltAt;
+    Transform endBeltAt;
+
     private void Awake()
     {
         playerInput = new PlayerActions();
@@ -115,6 +118,16 @@ public class PlayerController : MonoBehaviour
         Vector3 delta = new Vector3(cameraTransform.forward.x, 0.0f, cameraTransform.forward.z);
         transform.LookAt(transform.position + delta.normalized);
         transform.position += transform.forward * moveForward;
+
+        if(Input.GetMouseButtonDown(0))
+        {
+            MakeBelt();
+        }
+    }
+
+    void MakeBelt()
+    {
+
     }
 
     private void OnEnable()
@@ -125,7 +138,6 @@ public class PlayerController : MonoBehaviour
     {
         playerInput.Disable();
     }
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.magenta;

@@ -14,10 +14,10 @@ public class DroneLoadingState : State
 
     public override void Enter()
     {
-        Debug.Log("Entered Loading State");
+        /*Debug.Log("Entered Loading State");
         drone.myAgent.SetDestination(drone.transform.position);
         drone.myResourceGO = Instantiate(drone.myCurrentNode.GetResourceObject(), drone.ResourcePoint);
-        drone.myCarryingResource = drone.myResourceGO.GetComponent<Resource>();
+        drone.myCarryingResource = drone.myResourceGO.GetComponent<Resource>();*/
     }
 
     public override void MyUpdate()
@@ -28,7 +28,7 @@ public class DroneLoadingState : State
             return;
         }
 
-        drone.mCurrentCapacity += drone.myCurrentNode.GetResource(drone.MaxCarryCapacity);
+        //drone.mCurrentCapacity += drone.myCurrentNode.GetResource(drone.MaxCarryCapacity);
     }
 
     public override void Exit()

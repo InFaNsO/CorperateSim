@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/SolarSystem.unity
     guid: 244b996ff549f20449af828c4167b14d
   - enabled: 1
-    path: Assets/Scenes/PlayerSetup.unity
+    path: Assets/Scenes/Setup/PlayerSetup.unity
     guid: 57ad755dba04276468d70e2cfdda8837
   m_configObjects: {}

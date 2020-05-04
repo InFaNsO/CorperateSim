@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf6e144c53d8e074b87810ee7ad6e468, type: 3}
+  m_Name: Titanium
+  m_EditorClassIdentifier: 
+  Ingredients:
+  - item: {fileID: 11400000, guid: 9252b3e2156a78543a8880a214faf189, type: 2}
+    quantity: 4
+  - item: {fileID: 11400000, guid: 811bbc27def68c14cb51c5ec7c3e3544, type: 2}
+    quantity: 4
+  - item: {fileID: 11400000, guid: b441f045baa23ff40802e18fd0cf1792, type: 2}
+    quantity: 4
+  ResourcesProducedPerMinute: 20
+  ProducedBy: 4
+  finalProduct:
+    item: {fileID: 11400000, guid: 127af1e5e253ea34ba5ed9d2c8cf64d9, type: 2}
+    quantity: 1

@@ -17,9 +17,9 @@ public class Drone : MonoBehaviour
     [HideInInspector] public StateMachine myStatemachine = null;
     [HideInInspector] public UnityEngine.AI.NavMeshAgent  myAgent = null;
 
-    [HideInInspector] public ResourceNode myCurrentNode = null;
+    [HideInInspector] public ResourceNode myCurrentNode = null;/*
     [HideInInspector] public Factory myCurrentFactoryDropOff = null;
-    [HideInInspector] public Factory myCurrentFactoryPickUp = null;
+    [HideInInspector] public Factory myCurrentFactoryPickUp = null;*/
 
     [HideInInspector] public bool ResourcesGiven = false;
     [HideInInspector] public bool ResourcesTaken = false;
@@ -41,7 +41,8 @@ public class Drone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        var node = other.GetComponent<ResourceNode>();
+    }
+        /*var node = other.GetComponent<ResourceNode>();
         if (node)
         {
             Debug.Log("Touched a node");
@@ -113,5 +114,5 @@ public class Drone : MonoBehaviour
         Gizmos.color = Color.green;
         if(myAgent)
             Gizmos.DrawWireSphere(myAgent.destination, 5.0f);
-    }
+    }*/
 }

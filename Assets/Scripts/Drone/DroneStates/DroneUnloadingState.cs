@@ -21,10 +21,10 @@ public class DroneUnloadingState : State
 
     public override void MyUpdate()
     {
-        if (drone.mCurrentCapacity < 1.0f || drone.myCurrentFactoryDropOff.TakeResourceFromDrone(drone))
+        /*if (drone.mCurrentCapacity < 1.0f || drone.myCurrentFactoryDropOff.TakeResourceFromDrone(drone))
         {
             drone.myStatemachine.ChangeState(DroneStates.GoingToCollect.ToString());
-        }
+        }*/
     }
 
     public override void Exit()

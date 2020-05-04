@@ -25,10 +25,10 @@ public class DroneGoingToDropOffState : State
 
     public override void MyUpdate()
     {
-        if (myDrone.myCurrentFactoryDropOff != null)
+        /*if (myDrone.myCurrentFactoryDropOff != null)
         {
             myDrone.myStatemachine.ChangeState(DroneStates.UnLoading.ToString());
-        }
+        }*/
     }
 
     public override void Exit()

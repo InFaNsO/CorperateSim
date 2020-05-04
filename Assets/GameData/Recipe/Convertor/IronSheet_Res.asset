@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf6e144c53d8e074b87810ee7ad6e468, type: 3}
+  m_Name: IronSheet_Res
+  m_EditorClassIdentifier: 
+  Ingredients:
+  - item: {fileID: 11400000, guid: 11e164c4119ee9b4ea1fc5c4043727fc, type: 2}
+    quantity: 2
+  ResourcesProducedPerMinute: 60
+  ProducedBy: 2
+  finalProduct:
+    item: {fileID: 11400000, guid: 99b327a8ee2e2d840bf303b9629a39b6, type: 2}
+    quantity: 1

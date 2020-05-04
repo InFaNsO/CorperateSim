@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf6e144c53d8e074b87810ee7ad6e468, type: 3}
+  m_Name: Rocket
+  m_EditorClassIdentifier: 
+  Ingredients:
+  - item: {fileID: 11400000, guid: c897e6e6d5625cb4bb9ef732d1d49587, type: 2}
+    quantity: 10
+  - item: {fileID: 11400000, guid: 5f7cd827680b4e4499a5f2b1a5699f58, type: 2}
+    quantity: 20
+  - item: {fileID: 11400000, guid: 793c710d7c8803640a9ca979b6afd9b9, type: 2}
+    quantity: 25
+  ResourcesProducedPerMinute: 1
+  ProducedBy: 4
+  finalProduct:
+    item: {fileID: 11400000, guid: f6194180e26d76b4fbc9236b583781b7, type: 2}
+    quantity: 1

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf6e144c53d8e074b87810ee7ad6e468, type: 3}
+  m_Name: Insulator_Res
+  m_EditorClassIdentifier: 
+  Ingredients:
+  - item: {fileID: 11400000, guid: 3ff862b5a212225488482300dd696d9e, type: 2}
+    quantity: 2
+  - item: {fileID: 11400000, guid: 9252b3e2156a78543a8880a214faf189, type: 2}
+    quantity: 2
+  ResourcesProducedPerMinute: 60
+  ProducedBy: 3
+  finalProduct:
+    item: {fileID: 11400000, guid: 793c710d7c8803640a9ca979b6afd9b9, type: 2}
+    quantity: 1

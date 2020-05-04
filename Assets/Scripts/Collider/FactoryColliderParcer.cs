@@ -11,7 +11,7 @@ public enum FactoryColliderLocation
 
 public class FactoryColliderParcer : MonoBehaviour
 {
-    Factory myFactory;
+    /*Factory myFactory;
     [SerializeField] public FactoryColliderLocation myLocation = FactoryColliderLocation.Entry;
     
 
@@ -36,5 +36,5 @@ public class FactoryColliderParcer : MonoBehaviour
             }
             return;
         }
-    }
+    }*/
 }
