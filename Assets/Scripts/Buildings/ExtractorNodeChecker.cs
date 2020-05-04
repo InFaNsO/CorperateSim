@@ -8,8 +8,8 @@ public class ExtractorNodeChecker : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        var extractor = other.GetComponentInParent<ExtractorBuilding>();
+        var extractor = other.GetComponentInParent<ProductionBuilding>();
         if(extractor)
-            extractor.NodeResourceSetup(node);
+            extractor.SetRecipie(node.mType);
     }
 }

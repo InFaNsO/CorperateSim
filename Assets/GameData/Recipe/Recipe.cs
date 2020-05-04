@@ -29,35 +29,6 @@ public class Recipe : ScriptableObject
         ProduceNext = Time.time + TimeToProduce1;
     }
 
-    public uint Produce()
-    {
-        if(Time.time > ProduceNext)
-        {
-            float dt = Time.time - ProduceNext;
-            uint mod = (uint)(dt / TimeToProduce1) + 1;
-            ProduceNext = Time.time + TimeToProduce1;
-            return finalProduct.quantity * mod;
-        }
-
-        return 0;
-    }
-    public uint Produce(Item i)
-    {
-        uint maxQuantity = i.currentQuantity / Ingredients[0].quantity;
-        if (maxQuantity == 0)
-            return 0;
-
-        if (Time.time > ProduceNext)
-        {
-            float dt = Time.time - ProduceNext;
-            uint mod = (uint)(dt / TimeToProduce1) + 1;
-            uint quantity = (uint)Mathf.Min(mod, maxQuantity);
-            ProduceNext = Time.time + TimeToProduce1;
-            return finalProduct.quantity * quantity;
-        }
-        return 0;
-    }
-
     public uint Produce(List<Item> items)
     {
         List<uint> maxQ = new List<uint>();
@@ -67,6 +38,9 @@ public class Recipe : ScriptableObject
         uint minMaxQ = uint.MaxValue;
         for(int i = 0; i < maxQ.Count; ++i)
             minMaxQ = (uint)Mathf.Min(minMaxQ, maxQ[i]);
+
+        if (minMaxQ == 0)
+            return 0;
 
         if (Time.time > ProduceNext)
         {

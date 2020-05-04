@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Factory : MonoBehaviour
+public class ProductionBuilding : MonoBehaviour
 {
     public Recipe recipe = null;
     [SerializeField] public List<Recipe> RecipeBook;
@@ -11,13 +11,14 @@ public class Factory : MonoBehaviour
     [SerializeField] uint currentQ = 0;
 
     [SerializeField] BuilderManager builderManager;
-    [SerializeField] List<ConveyorInputSlot> inputs;
+    [SerializeField] List<ConveyorInputSlot> inputs = new List<ConveyorInputSlot>();
     [SerializeField] ConveyorOutputSlot outPut;
 
-    // Start is called before the first frame update
+    bool hasPower = false;
+
     void Start()
     {
-        for(int i = 0; i < inputs.Count; ++i)
+        for (int i = 0; i < inputs.Count; ++i)
             inputs[i].bm = builderManager;
         outPut.bm = builderManager;
 
@@ -25,15 +26,19 @@ public class Factory : MonoBehaviour
         SetRecipie(RecipeBook[0].finalProduct.item);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!recipe)
             return;
 
-        for(int i = 0; i < inputs.Count; ++i)
+        if(!hasPower)
         {
-            if(inputs[i].belt)
+            //getPower
+        }
+
+        for (int i = 0; i < inputs.Count; ++i)
+        {
+            if (inputs[i].belt)
             {
                 //Get shit
             }
@@ -43,7 +48,7 @@ public class Factory : MonoBehaviour
         OutPutSlot.currentQuantity = (uint)Mathf.Min(OutPutSlot.maxQuantity, OutPutSlot.currentQuantity);
         currentQ = OutPutSlot.currentQuantity;
 
-        if(outPut.belt)
+        if (outPut.belt)
         {
             //Send Shit
         }
@@ -56,13 +61,12 @@ public class Factory : MonoBehaviour
             if (RecipeBook[i].finalProduct.item == finalProduct)
             {
                 recipe = Instantiate(RecipeBook[i]);
-                for(int j = 0; j < recipe.Ingredients.Count; ++j)
+                for (int j = 0; j < recipe.Ingredients.Count; ++j)
                 {
                     InputSlots.Add(Instantiate(recipe.Ingredients[j].item));
                 }
 
                 //recipe.Clone(RecipeBook[i]);
-                //InputSlot = Instantiate(recipe.Ingredients[0].item);
                 OutPutSlot = Instantiate(recipe.finalProduct.item);
                 if (OutPutSlot.currentQuantity > 0)
                     OutPutSlot.currentQuantity = 0;
@@ -75,5 +79,14 @@ public class Factory : MonoBehaviour
     {
         for (int j = 0; j < recipe.Ingredients.Count; ++j)
             InputSlots[j].currentQuantity = InputSlots[j].maxQuantity;
+    }
+
+    public void ShutDown()
+    {
+        hasPower = false;
+    }
+    public void TurnOn()
+    {
+        hasPower = true;
     }
 }
