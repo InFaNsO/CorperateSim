@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
@@ -11,9 +12,9 @@ public class Wire : MonoBehaviour
 
     Path path;
 
-    Mesh2D shape;
+    [SerializeField] Mesh2D shape = null;
     int NumShapeVertices = 10;
-    [SerializeField] float radius = 0.5f;
+    [SerializeField] float radius = 0.05f;
 
     MeshFilter myMesh;
     Mesh mesh;
@@ -24,7 +25,6 @@ public class Wire : MonoBehaviour
         myMesh.sharedMesh = new Mesh();
         mesh = myMesh.sharedMesh;
         MakeShape();
-
     }
 
     void MakeShape()
@@ -34,11 +34,13 @@ public class Wire : MonoBehaviour
         float u = 0.0f;
         float deltaU = 1f / NumShapeVertices;
 
+        shape = new Mesh2D();
         shape.vertices = new Mesh2D.Vertex[NumShapeVertices];
         shape.lineSegements = new Vector2Int[NumShapeVertices];
 
         Vector2 pStart = new Vector2(Mathf.Cos(angle) * radius, Mathf.Sin(angle) * radius);
         angle += deltaAngle;
+        shape.vertices[0] = new Mesh2D.Vertex();
         shape.vertices[0].point = pStart;
         shape.vertices[0].normal = pStart.normalized;
         shape.vertices[0].u = u;
@@ -48,6 +50,7 @@ public class Wire : MonoBehaviour
         {
             Vector2 p1 = new Vector2(Mathf.Cos(angle) * radius, Mathf.Sin(angle) * radius);
             angle += deltaAngle;
+            shape.vertices[i] = new Mesh2D.Vertex();
             shape.vertices[i].point = p1;
             shape.vertices[i].normal = p1.normalized;
             shape.vertices[i].u = u;
@@ -64,13 +67,13 @@ public class Wire : MonoBehaviour
         path = new Path(nodeStart.transform, nodeEnd.transform);
 
         //reset controll points
-        float halfDist = (nodeStart.transform.position + nodeEnd.transform.position).magnitude * 0.5f;
+        float halfDist = (nodeStart.transform.position + nodeEnd.transform.position).magnitude * 0.05f;
         var cont1 = (nodeEnd.transform.position - nodeStart.transform.position).normalized * halfDist;
         cont1.y -= nodeStart.transform.position.y * 0.5f;
-        path.MovePoint(1, cont1);
+        path.MovePoint(1, nodeStart.transform.position + cont1);
         var cont2 = (-nodeEnd.transform.position + nodeStart.transform.position).normalized * halfDist;
         cont2.y -= nodeEnd.transform.position.y * 0.5f;
-        path.MovePoint(2, cont2);
+        path.MovePoint(2, nodeEnd.transform.position + cont2);
 
         MakeMesh();
     }
@@ -121,5 +124,30 @@ public class Wire : MonoBehaviour
         mesh.normals = normals.ToArray();
         mesh.uv = uv.ToArray();
         mesh.SetTriangles(indices.ToArray(), 0);
+    }
+
+    private void OnDrawGizmos()
+    {
+        for (int i = 0; i < path.NumSegments; ++i)
+        {
+            var points = path.GetPointsInSegment(i);
+
+            Handles.color = Color.black;
+            Handles.DrawLine(points[1], points[0]);
+            Handles.DrawLine(points[2], points[3]);
+
+            Handles.DrawBezier(points[0], points[3], points[1], points[2], Color.green, null, 2);
+        }
+
+        Handles.color = Color.red;
+        for (int i = 0; i < path.NumPoints; ++i)
+        {
+            var newPos = Handles.FreeMoveHandle(path[i], Quaternion.identity, 0.1f, Vector3.zero, Handles.SphereHandleCap);
+            if (newPos != path[i])
+            {
+                //Undo.RecordObject(creator, "Move Point");
+                path.MovePoint(i, newPos);
+            }
+        }
     }
 }

@@ -9,18 +9,20 @@ using UnityEditor;
 public class ConveyorBeltSegment : MonoBehaviour
 {
     public Mesh2D shape;
-    Path path;
+    public Path path;
 
     MeshFilter myMesh;
-    MeshCollider myCollider;
+    [SerializeField] MeshCollider myCollider;
     Mesh mesh;
 
     public OrientedPoint[] myPoints;
 
-    [SerializeField] public Transform startPos;
-    [SerializeField] public Transform endPos;
+    [SerializeField] public ConveyorInputSlot startPos;
+    [SerializeField] public ConveyorOutputSlot endPos;
 
     [SerializeField] bool remake;
+
+    public float TimeToReachNextPoint = 1.0f;
 
     private void Awake()
     {
@@ -28,18 +30,19 @@ public class ConveyorBeltSegment : MonoBehaviour
         myCollider = GetComponent<MeshCollider>();
         myMesh.sharedMesh = new Mesh();
         mesh = myMesh.sharedMesh;
+        myCollider.sharedMesh = mesh;
 
         if (startPos && endPos)
         {
-            path = new Path(startPos, endPos);
-            MakeMesh();
+            path = new Path(startPos.transform, endPos.transform);
+            //MakeMesh();
         }
     }
-    public void ResetPath(Transform start, Transform end)
+    public void ResetPath(ConveyorInputSlot start, ConveyorOutputSlot end)
     {
         startPos = start;
         endPos = end;
-        path = new Path(startPos, endPos);
+        path = new Path(endPos.transform, startPos.transform);
         MakeMesh();
     }
 
@@ -49,10 +52,10 @@ public class ConveyorBeltSegment : MonoBehaviour
         myCollider = GetComponent<MeshCollider>();
         myMesh.sharedMesh = new Mesh();
         mesh = myMesh.sharedMesh;
-
+        myCollider.sharedMesh = mesh;
         if (startPos && endPos)
         {
-            path = new Path(startPos, endPos);
+            path = new Path(startPos.transform, endPos.transform);
             MakeMesh();
         }
     }
@@ -105,8 +108,7 @@ public class ConveyorBeltSegment : MonoBehaviour
         mesh.uv = uv.ToArray();
         mesh.SetTriangles(indices.ToArray(), 0);
 
-        myCollider.sharedMesh.Clear();
-        myCollider.sharedMesh = mesh;
+        //myCollider.sharedMesh = mesh;
     }
 
     private void OnDrawGizmos()

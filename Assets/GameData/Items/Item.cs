@@ -24,4 +24,5 @@ public class Item : ScriptableObject
 
     public Sprite icon;
     public Mesh model;
+    public Material mat;
 }

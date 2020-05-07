@@ -14,8 +14,7 @@ public class Pole : MonoBehaviour
 
     private void Awake()
     {
-        input.bm = buildManager;
-        output.bm = buildManager;
+
     }
 
     private void Update()

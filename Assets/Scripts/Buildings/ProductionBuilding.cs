@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 public class ProductionBuilding : MonoBehaviour
 {
@@ -12,16 +13,18 @@ public class ProductionBuilding : MonoBehaviour
 
     [SerializeField] BuilderManager builderManager;
     [SerializeField] List<ConveyorInputSlot> inputs = new List<ConveyorInputSlot>();
-    [SerializeField] ConveyorOutputSlot outPut;
+    [SerializeField] ConveyorOutputSlot outPut = null;
+
+    [SerializeField] GameObject resourceObject;
+    GameObject ro = null;
 
     bool hasPower = false;
 
+    List<GameObject> inCommingResourcesToBeDestroyed = new List<GameObject>();
+    [SerializeField] Transform resourceSpawnPoint = null;
+
     void Start()
     {
-        for (int i = 0; i < inputs.Count; ++i)
-            inputs[i].bm = builderManager;
-        outPut.bm = builderManager;
-
         //ForTEsting
         SetRecipie(RecipeBook[0].finalProduct.item);
     }
@@ -48,10 +51,23 @@ public class ProductionBuilding : MonoBehaviour
         OutPutSlot.currentQuantity = (uint)Mathf.Min(OutPutSlot.maxQuantity, OutPutSlot.currentQuantity);
         currentQ = OutPutSlot.currentQuantity;
 
-        if (outPut.belt)
+        if (outPut.belt && OutPutSlot.currentQuantity > 0)
         {
-            //Send Shit
+            //check if the initial position is free then add
+            //assuming its free
+            var go = Instantiate(ro, resourceSpawnPoint.position, resourceSpawnPoint.rotation);
+            var r = go.GetComponent<Resource>();
+            r.myCurrentBelt = outPut.belt;
+            r.SetPath();
+            OutPutSlot.currentQuantity -= 1;
         }
+    }
+
+    private void LateUpdate()
+    {
+        for (int i = 0; i < inCommingResourcesToBeDestroyed.Count; ++i)
+            Destroy(inCommingResourcesToBeDestroyed[i]);
+        inCommingResourcesToBeDestroyed.Clear();
     }
 
     public void SetRecipie(Item finalProduct)
@@ -70,15 +86,21 @@ public class ProductionBuilding : MonoBehaviour
                 OutPutSlot = Instantiate(recipe.finalProduct.item);
                 if (OutPutSlot.currentQuantity > 0)
                     OutPutSlot.currentQuantity = 0;
-                forTesting();
-                return;
+                //forTesting();
+                break;
             }
         }
+        SetResourceObject();
     }
-    void forTesting()
+
+    void SetResourceObject()
     {
-        for (int j = 0; j < recipe.Ingredients.Count; ++j)
-            InputSlots[j].currentQuantity = InputSlots[j].maxQuantity;
+        if (ro)
+            Destroy(ro);
+        ro = Instantiate(resourceObject, Vector3.zero, Quaternion.identity);
+        ro.GetComponent<Resource>().item = recipe.finalProduct.item;
+        ro.GetComponent<MeshFilter>().sharedMesh = recipe.finalProduct.item.model;
+        ro.GetComponent<MeshRenderer>().material = recipe.finalProduct.item.mat;
     }
 
     public void ShutDown()
@@ -88,5 +110,19 @@ public class ProductionBuilding : MonoBehaviour
     public void TurnOn()
     {
         hasPower = true;
+    }
+
+    public void AddResource(GameObject resource)
+    {
+        var r = resource.GetComponent<Resource>();
+        for(int i = 0; i < recipe.Ingredients.Count; ++i)
+        {
+            if(recipe.Ingredients[i].item == r.item)
+            {
+                InputSlots[i].currentQuantity += 1;
+                inCommingResourcesToBeDestroyed.Add(resource);
+                break;
+            }
+        }
     }
 }

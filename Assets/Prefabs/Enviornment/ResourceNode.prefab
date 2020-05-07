@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5789262743268535601}
   - component: {fileID: 3826696597047712289}
   - component: {fileID: 2582767515492983085}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: NodeConnector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   - component: {fileID: 5639475974963472087}
   - component: {fileID: 5639475974963472084}
   - component: {fileID: 6614413351610459099}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: ResourceNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,9 +106,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mType: {fileID: 0}
   mQuality: 2
-  ResourcePerMin: 60
-  MaxCapacity: 10
-  myResource: {fileID: 0}
 --- !u!54 &6614413351610459099
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -136,7 +133,7 @@ GameObject:
   - component: {fileID: 5639475975523345468}
   - component: {fileID: 5639475975523345459}
   - component: {fileID: 5639475975523345458}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213,7 +210,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5639475976003930796}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Colliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,7 +242,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5639475976534191818}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Graphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,7 +274,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5848829085272616499}
   - component: {fileID: 3350964531460615350}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: MainBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}

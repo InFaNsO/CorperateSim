@@ -16,8 +16,8 @@ TagManager:
   - ConveyorInput
   - ConveyorOutput
   - ElectricNode
-  - 
-  - 
+  - Ground
+  - ResourceNode
   - 
   - 
   - 

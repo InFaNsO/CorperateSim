@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: IronOre
   m_EditorClassIdentifier: 
   Ingredients: []
-  ResourcesProducedPerMinute: 60
+  ResourcesProducedPerMinute: 10
   ProducedBy: 0
   finalProduct:
     item: {fileID: 11400000, guid: acee00b9ffd7d4c49a20aeb82f9bdd92, type: 2}

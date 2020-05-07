@@ -230,6 +230,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7658257491641688918}
   - component: {fileID: 2318627521808635257}
+  - component: {fileID: 4082023105192416432}
   m_Layer: 0
   m_Name: ElectricPole
   m_TagString: Untagged
@@ -274,6 +275,22 @@ MonoBehaviour:
   - {fileID: 3650037496743584623}
   - {fileID: 2936192028980945350}
   - {fileID: 5544874747128369979}
+--- !u!54 &4082023105192416432
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8436324252371986131}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &8519355739890849687
 GameObject:
   m_ObjectHideFlags: 0
