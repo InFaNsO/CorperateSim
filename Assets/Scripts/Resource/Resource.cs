@@ -19,6 +19,22 @@ public class Resource : MonoBehaviour
     public void Update()
     {
         if (myPath.Count <= 1)
+        {
+            if (myCurrentBelt)
+            {
+                var pole = myCurrentBelt.startPos.GetComponentInParent<Pole>(); //chnage this later
+                if (pole)
+                {
+                    if (pole.BeltOut)
+                    {
+                        myCurrentBelt = pole.BeltOut;
+                        SetPath();
+                    }
+                }
+            }
+            return;
+        }
+        if (!myCurrentBelt)
             return;
 
         var opCurr = myPath[0];
@@ -37,11 +53,26 @@ public class Resource : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        var factoryInput = other.GetComponent<ConveyorInputSlot>();
-        if(factoryInput)
+        var inputSlot = other.GetComponent<ConveyorInputSlot>();
+        if(inputSlot)
         {
-            if(factoryInput.GetComponentInParent<ProductionBuilding>())
-                factoryInput.GetComponentInParent<ProductionBuilding>().AddResource(gameObject);
+            if(inputSlot.GetComponentInParent<ProductionBuilding>())
+                inputSlot.GetComponentInParent<ProductionBuilding>().AddResource(gameObject);
+            else if(inputSlot.GetComponentInParent<Pole>())
+            {
+                var pole = inputSlot.GetComponentInParent<Pole>();
+                if(pole.BeltOut)
+                {
+                    myCurrentBelt = pole.BeltOut;
+                    SetPath();
+                }
+            }
+            else if(inputSlot.GetComponentInParent<ConveyorSpliter>())
+            {
+                var spliter = inputSlot.GetComponentInParent<ConveyorSpliter>();
+                spliter.SetResourceNextPath(this);
+            }
+
             return;
         }
         var factoryOutput = other.GetComponent<ConveyorInputSlot>();

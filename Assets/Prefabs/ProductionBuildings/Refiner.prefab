@@ -323,16 +323,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: OutputSlot
       objectReference: {fileID: 0}
-    - target: {fileID: 5104368061026515802, guid: e8dd9ecb371c8e341b46110c67213469,
-        type: 3}
-      propertyPath: m_Center.x
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7267262087832452383, guid: e8dd9ecb371c8e341b46110c67213469,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 8854729525280527736, guid: e8dd9ecb371c8e341b46110c67213469,
         type: 3}
       propertyPath: m_LocalPosition.x

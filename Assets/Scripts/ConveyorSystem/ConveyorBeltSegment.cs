@@ -64,6 +64,7 @@ public class ConveyorBeltSegment : MonoBehaviour
     {
         myPoints = path.CalculateEvenlySpaceOrientedPoints(0.4f);
         mesh.Clear();
+        Mesh nMesh = new Mesh();
         List<Vector3> vertices = new List<Vector3>();
         List<Vector3> normals= new List<Vector3>();
         List<int> indices= new List<int>();
@@ -103,10 +104,14 @@ public class ConveyorBeltSegment : MonoBehaviour
             }
         }
 
-        mesh.vertices = vertices.ToArray();
-        mesh.normals = normals.ToArray();
-        mesh.uv = uv.ToArray();
-        mesh.SetTriangles(indices.ToArray(), 0);
+        nMesh.vertices = vertices.ToArray();
+        nMesh.normals = normals.ToArray();
+        nMesh.uv = uv.ToArray();
+        nMesh.SetTriangles(indices.ToArray(), 0);
+
+        myMesh.sharedMesh = nMesh;
+        //myCollider.sharedMesh = nMesh;
+        mesh = nMesh;
 
         //myCollider.sharedMesh = mesh;
     }

@@ -7,10 +7,6 @@ using UnityEngine;
 [RequireComponent(typeof(ProductionBuildingBuilder))]
 public class BuilderManager : MonoBehaviour
 {
-    [SerializeField] GameObject WireObject;
-    [SerializeField] GameObject Extractor;
-    [SerializeField] GameObject Convertor;
-
     List<BuilderBase> mBuilders = new List<BuilderBase>();
     ProductionBuildingBuilder mProductionBuilder = null;
 
@@ -21,17 +17,12 @@ public class BuilderManager : MonoBehaviour
         MakingPole = 1,
         MakingWire = 2,
         MakingElectricPole = 3,
-        MakingProductionBuilding = 4    //has to be in the end
+        MakingConveyorSplitter = 4,
+        MakingProductionBuilding = 5 //has to be in the end
     }
 
     int factoryNum = -1;
 
-
-    public ConveyorInputSlot slot1;
-    public ConveyorOutputSlot slot2;
-
-    public ElectricNode node1;
-    public ElectricNode node2;
 
     Action currentAction = Action.none;
 
@@ -43,6 +34,7 @@ public class BuilderManager : MonoBehaviour
         mBuilders.Add(GetComponent<ConveyorPoleBuilder>());
         mBuilders.Add(GetComponent<WireBuilder>());
         mBuilders.Add(GetComponent<ElectricPoleBuilder>());
+        mBuilders.Add(GetComponent<ConveyorSpliterBuilder>());
         mBuilders.Add(mProductionBuilder);
     }
 
