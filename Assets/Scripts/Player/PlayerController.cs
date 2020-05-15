@@ -118,16 +118,6 @@ public class PlayerController : MonoBehaviour
         Vector3 delta = new Vector3(cameraTransform.forward.x, 0.0f, cameraTransform.forward.z);
         transform.LookAt(transform.position + delta.normalized);
         transform.position += transform.forward * moveForward;
-
-        if(Input.GetMouseButtonDown(0))
-        {
-            MakeBelt();
-        }
-    }
-
-    void MakeBelt()
-    {
-
     }
 
     private void OnEnable()

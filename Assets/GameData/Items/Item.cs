@@ -10,7 +10,8 @@ public enum ProductionMachine
     Convertor,
     Factory1,
     Factory2,
-    Factory3
+    Factory3,
+    CoalProducer
 }
 
 

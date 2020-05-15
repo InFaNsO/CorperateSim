@@ -85,7 +85,7 @@ public class @PlayerActions : IInputActionCollection, IDisposable
                 {
                     ""name"": ""up"",
                     ""id"": ""a6ad90c5-8ca2-42a2-872f-c577555c176e"",
-                    ""path"": ""<Keyboard>/w"",
+                    ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
@@ -96,7 +96,7 @@ public class @PlayerActions : IInputActionCollection, IDisposable
                 {
                     ""name"": ""down"",
                     ""id"": ""415b533c-e67c-4483-b09e-14377498ba09"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
@@ -107,10 +107,10 @@ public class @PlayerActions : IInputActionCollection, IDisposable
                 {
                     ""name"": ""left"",
                     ""id"": ""eb4ff7fb-8843-4e2e-b229-faf7b30247c1"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": """",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -118,7 +118,7 @@ public class @PlayerActions : IInputActionCollection, IDisposable
                 {
                     ""name"": ""right"",
                     ""id"": ""a39daa15-7f5b-4db2-bec2-398f83da3421"",
-                    ""path"": ""<Keyboard>/d"",
+                    ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
