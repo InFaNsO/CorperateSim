@@ -20,6 +20,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Speed",
+                    "type": "Button",
+                    "id": "e2c0769b-0368-4d59-8e34-b2dadbbb9934",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -147,7 +155,7 @@
                 {
                     "name": "negative",
                     "id": "75fb045e-6045-4a27-afc7-f1becff1097a",
-                    "path": "<Keyboard>/leftCtrl",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyBoard",
@@ -158,7 +166,7 @@
                 {
                     "name": "positive",
                     "id": "019a405c-6d43-4d86-93de-8f15b1d9eda7",
-                    "path": "<Keyboard>/leftShift",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyBoard",
@@ -196,6 +204,39 @@
                     "processors": "",
                     "groups": "Controller",
                     "action": "Altitude",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "KeyBoard",
+                    "id": "b6802391-ab4e-4787-93fa-a87bcf2d50f5",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Speed",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "c2dcc0e5-ca59-444d-a64d-52ec28860293",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyBoard",
+                    "action": "Speed",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "98ee98db-a09b-4f91-ace3-18e176837af9",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyBoard",
+                    "action": "Speed",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

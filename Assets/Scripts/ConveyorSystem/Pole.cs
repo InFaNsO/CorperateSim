@@ -19,7 +19,13 @@ public class Pole : MonoBehaviour
 
     private void Update()
     {
-        if(input.belt && !BeltIn)
+        SetBelt();
+
+    }
+
+    void SetBelt()
+    {
+        if (input.belt && !BeltIn)
             BeltIn = input.belt;
         if (output.belt && !BeltOut)
             BeltOut = output.belt;

@@ -117,3 +117,4 @@ MonoBehaviour:
   endPos: {fileID: 0}
   remake: 0
   TimeToReachNextPoint: 2
+  maxVel: 1

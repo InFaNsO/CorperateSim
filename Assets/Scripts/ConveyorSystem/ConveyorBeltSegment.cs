@@ -22,7 +22,12 @@ public class ConveyorBeltSegment : MonoBehaviour
 
     [SerializeField] bool remake;
 
-    public float TimeToReachNextPoint = 1.0f;
+    public float TimeToReachNextPoint = 4.0f;
+
+    [Tooltip("Change this to upgrade with the level of belt")]
+    public float maxVel = 0.01f;
+
+    List<Resource> MyResources = new List<Resource>();
 
     private void Awake()
     {
@@ -44,6 +49,7 @@ public class ConveyorBeltSegment : MonoBehaviour
         endPos = end;
         path = new Path(endPos.transform, startPos.transform);
         MakeMesh();
+        myPoints = path.CalculateEvenlySpaceOrientedPoints(2f);
     }
 
     private void OnValidate()
@@ -139,5 +145,17 @@ public class ConveyorBeltSegment : MonoBehaviour
                 path.MovePoint(i, newPos);
             }
         }
+
+        Gizmos.color = Color.green;
+        for(int i = 0; i < myPoints.Length; ++i)
+        {
+            Gizmos.DrawSphere(myPoints[i].position, 0.1f);
+        }
+    }
+
+
+    private void Update()
+    {
+        
     }
 }

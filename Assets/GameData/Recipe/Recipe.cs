@@ -29,11 +29,27 @@ public class Recipe : ScriptableObject
         ProduceNext = Time.time + TimeToProduce1;
     }
 
+    uint Produce()
+    {
+        if (Time.time > ProduceNext)
+        {
+            float dt = Time.time - ProduceNext;
+            uint mod = (uint)(dt / TimeToProduce1) + 1;
+            ProduceNext = Time.time + TimeToProduce1;
+            return finalProduct.quantity;
+        }
+
+        return 0;
+    }
+
     public uint Produce(List<Item> items)
     {
+        if (items.Count == 0)
+            return Produce();
+
         List<uint> maxQ = new List<uint>();
         for(int i = 0; i < items.Count; ++i)
-            maxQ.Add(items[i].currentQuantity / Ingredients[0].quantity);
+            maxQ.Add(items[i].currentQuantity / Ingredients[i].quantity);
         
         uint minMaxQ = uint.MaxValue;
         for(int i = 0; i < maxQ.Count; ++i)

@@ -97,7 +97,8 @@ public class ProductionBuilding : MonoBehaviour
     {
         if (ro)
             Destroy(ro);
-        ro = Instantiate(resourceObject, Vector3.zero, Quaternion.identity);
+        ro = Instantiate(resourceObject, transform.position, transform.rotation);
+        ro.transform.position += Vector3.up * 3.0f;
         ro.GetComponent<Resource>().item = recipe.finalProduct.item;
         ro.GetComponent<MeshFilter>().sharedMesh = recipe.finalProduct.item.model;
         ro.GetComponent<MeshRenderer>().material = recipe.finalProduct.item.mat;

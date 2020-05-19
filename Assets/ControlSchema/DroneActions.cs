@@ -33,6 +33,14 @@ public class @DroneActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Speed"",
+                    ""type"": ""Button"",
+                    ""id"": ""e2c0769b-0368-4d59-8e34-b2dadbbb9934"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -160,7 +168,7 @@ public class @DroneActions : IInputActionCollection, IDisposable
                 {
                     ""name"": ""negative"",
                     ""id"": ""75fb045e-6045-4a27-afc7-f1becff1097a"",
-                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyBoard"",
@@ -171,7 +179,7 @@ public class @DroneActions : IInputActionCollection, IDisposable
                 {
                     ""name"": ""positive"",
                     ""id"": ""019a405c-6d43-4d86-93de-8f15b1d9eda7"",
-                    ""path"": ""<Keyboard>/leftShift"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyBoard"",
@@ -211,6 +219,39 @@ public class @DroneActions : IInputActionCollection, IDisposable
                     ""action"": ""Altitude"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""KeyBoard"",
+                    ""id"": ""b6802391-ab4e-4787-93fa-a87bcf2d50f5"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Speed"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""c2dcc0e5-ca59-444d-a64d-52ec28860293"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyBoard"",
+                    ""action"": ""Speed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""98ee98db-a09b-4f91-ace3-18e176837af9"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyBoard"",
+                    ""action"": ""Speed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -244,6 +285,7 @@ public class @DroneActions : IInputActionCollection, IDisposable
         m_DroneMap = asset.FindActionMap("DroneMap", throwIfNotFound: true);
         m_DroneMap_Move = m_DroneMap.FindAction("Move", throwIfNotFound: true);
         m_DroneMap_Altitude = m_DroneMap.FindAction("Altitude", throwIfNotFound: true);
+        m_DroneMap_Speed = m_DroneMap.FindAction("Speed", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -295,12 +337,14 @@ public class @DroneActions : IInputActionCollection, IDisposable
     private IDroneMapActions m_DroneMapActionsCallbackInterface;
     private readonly InputAction m_DroneMap_Move;
     private readonly InputAction m_DroneMap_Altitude;
+    private readonly InputAction m_DroneMap_Speed;
     public struct DroneMapActions
     {
         private @DroneActions m_Wrapper;
         public DroneMapActions(@DroneActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_DroneMap_Move;
         public InputAction @Altitude => m_Wrapper.m_DroneMap_Altitude;
+        public InputAction @Speed => m_Wrapper.m_DroneMap_Speed;
         public InputActionMap Get() { return m_Wrapper.m_DroneMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -316,6 +360,9 @@ public class @DroneActions : IInputActionCollection, IDisposable
                 @Altitude.started -= m_Wrapper.m_DroneMapActionsCallbackInterface.OnAltitude;
                 @Altitude.performed -= m_Wrapper.m_DroneMapActionsCallbackInterface.OnAltitude;
                 @Altitude.canceled -= m_Wrapper.m_DroneMapActionsCallbackInterface.OnAltitude;
+                @Speed.started -= m_Wrapper.m_DroneMapActionsCallbackInterface.OnSpeed;
+                @Speed.performed -= m_Wrapper.m_DroneMapActionsCallbackInterface.OnSpeed;
+                @Speed.canceled -= m_Wrapper.m_DroneMapActionsCallbackInterface.OnSpeed;
             }
             m_Wrapper.m_DroneMapActionsCallbackInterface = instance;
             if (instance != null)
@@ -326,6 +373,9 @@ public class @DroneActions : IInputActionCollection, IDisposable
                 @Altitude.started += instance.OnAltitude;
                 @Altitude.performed += instance.OnAltitude;
                 @Altitude.canceled += instance.OnAltitude;
+                @Speed.started += instance.OnSpeed;
+                @Speed.performed += instance.OnSpeed;
+                @Speed.canceled += instance.OnSpeed;
             }
         }
     }
@@ -352,5 +402,6 @@ public class @DroneActions : IInputActionCollection, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnAltitude(InputAction.CallbackContext context);
+        void OnSpeed(InputAction.CallbackContext context);
     }
 }
