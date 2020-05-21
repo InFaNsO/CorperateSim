@@ -41,6 +41,14 @@ public class @DroneActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""edfa677e-7147-4604-89a6-548cf84948d0"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -252,6 +260,17 @@ public class @DroneActions : IInputActionCollection, IDisposable
                     ""action"": ""Speed"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bd922b29-7517-4aa0-b0eb-e09cfd62c500"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyBoard"",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -286,6 +305,7 @@ public class @DroneActions : IInputActionCollection, IDisposable
         m_DroneMap_Move = m_DroneMap.FindAction("Move", throwIfNotFound: true);
         m_DroneMap_Altitude = m_DroneMap.FindAction("Altitude", throwIfNotFound: true);
         m_DroneMap_Speed = m_DroneMap.FindAction("Speed", throwIfNotFound: true);
+        m_DroneMap_Look = m_DroneMap.FindAction("Look", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -338,6 +358,7 @@ public class @DroneActions : IInputActionCollection, IDisposable
     private readonly InputAction m_DroneMap_Move;
     private readonly InputAction m_DroneMap_Altitude;
     private readonly InputAction m_DroneMap_Speed;
+    private readonly InputAction m_DroneMap_Look;
     public struct DroneMapActions
     {
         private @DroneActions m_Wrapper;
@@ -345,6 +366,7 @@ public class @DroneActions : IInputActionCollection, IDisposable
         public InputAction @Move => m_Wrapper.m_DroneMap_Move;
         public InputAction @Altitude => m_Wrapper.m_DroneMap_Altitude;
         public InputAction @Speed => m_Wrapper.m_DroneMap_Speed;
+        public InputAction @Look => m_Wrapper.m_DroneMap_Look;
         public InputActionMap Get() { return m_Wrapper.m_DroneMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -363,6 +385,9 @@ public class @DroneActions : IInputActionCollection, IDisposable
                 @Speed.started -= m_Wrapper.m_DroneMapActionsCallbackInterface.OnSpeed;
                 @Speed.performed -= m_Wrapper.m_DroneMapActionsCallbackInterface.OnSpeed;
                 @Speed.canceled -= m_Wrapper.m_DroneMapActionsCallbackInterface.OnSpeed;
+                @Look.started -= m_Wrapper.m_DroneMapActionsCallbackInterface.OnLook;
+                @Look.performed -= m_Wrapper.m_DroneMapActionsCallbackInterface.OnLook;
+                @Look.canceled -= m_Wrapper.m_DroneMapActionsCallbackInterface.OnLook;
             }
             m_Wrapper.m_DroneMapActionsCallbackInterface = instance;
             if (instance != null)
@@ -376,6 +401,9 @@ public class @DroneActions : IInputActionCollection, IDisposable
                 @Speed.started += instance.OnSpeed;
                 @Speed.performed += instance.OnSpeed;
                 @Speed.canceled += instance.OnSpeed;
+                @Look.started += instance.OnLook;
+                @Look.performed += instance.OnLook;
+                @Look.canceled += instance.OnLook;
             }
         }
     }
@@ -403,5 +431,6 @@ public class @DroneActions : IInputActionCollection, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnAltitude(InputAction.CallbackContext context);
         void OnSpeed(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
     }
 }

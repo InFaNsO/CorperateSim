@@ -5,5 +5,4 @@ using UnityEngine;
 public class ConveyorInputSlot : MonoBehaviour
 {
     public ConveyorBeltSegment belt = null;
-
 }

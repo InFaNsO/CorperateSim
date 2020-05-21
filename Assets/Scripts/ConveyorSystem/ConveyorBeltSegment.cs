@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.PackageManager.Requests;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
@@ -27,7 +28,29 @@ public class ConveyorBeltSegment : MonoBehaviour
     [Tooltip("Change this to upgrade with the level of belt")]
     public float maxVel = 0.01f;
 
-    List<Resource> MyResources = new List<Resource>();
+
+    class ResourceData
+    {
+        public OrientedPoint point;
+        public Resource currentResource = null;
+    }
+    List<ResourceData> MyResources = new List<ResourceData>();
+    List<Resource> UnAttendedResource = new List<Resource>();
+
+    public bool HasResource()
+    {
+        return MyResources[0].currentResource;
+    }
+    public void AddResource(Resource r)
+    {
+        r.pointIndex = -1;
+        if (MyResources[0].currentResource = null)
+        {
+            MyResources[0].currentResource = r;
+        }
+        else
+            UnAttendedResource.Add(r);
+    }
 
     private void Awake()
     {
@@ -50,6 +73,13 @@ public class ConveyorBeltSegment : MonoBehaviour
         path = new Path(endPos.transform, startPos.transform);
         MakeMesh();
         myPoints = path.CalculateEvenlySpaceOrientedPoints(2f);
+
+        MyResources.Clear();
+        for(int i = 0; i < myPoints.Length; ++i)
+        {
+            MyResources.Add(new ResourceData());
+            MyResources[i].point = myPoints[i];
+        }
     }
 
     private void OnValidate()
@@ -156,6 +186,55 @@ public class ConveyorBeltSegment : MonoBehaviour
 
     private void Update()
     {
-        
+        for(int i = 1; i < MyResources.Count; ++i)
+        {
+            if(MyResources[i].currentResource == null)
+            {
+                if(MyResources[i-1].currentResource)
+                {
+                    //move this to current
+                    if (MyResources[i - 1].currentResource.t != 0f)
+                        SetResource(i - 1);
+
+                    MoveCurrentResource(i - 1);
+                }
+            }
+        }
+
+        if(UnAttendedResource.Count > 0 && MyResources[0].currentResource == null)
+        {
+            MyResources[0].currentResource = UnAttendedResource[0];
+            UnAttendedResource.RemoveAt(0);
+        }
+    }
+
+    void SetResource(int i)
+    {
+        var r = MyResources[i].currentResource;
+        r.t = 0f;
+        r.startTime = Time.time;
+    }
+    void MoveCurrentResource(int i)
+    {
+        var r = MyResources[i].currentResource;
+        var opCurr = MyResources[i].point;
+        var opNext = MyResources[i + 1].point;
+        r.t = Time.time - r.startTime / (TimeToReachNextPoint * 2f);
+
+        var p = Vector3.Lerp(opCurr.position, opNext.position, r.t);
+        //p.y += 0.2f;
+        r.transform.position = p;
+        r.transform.rotation = Quaternion.Slerp(opCurr.orientation, opNext.orientation, r.t);
+
+        //r.myRB.MovePosition(p);
+        //r.myRB.MoveRotation(Quaternion.Slerp(opCurr.orientation, opNext.orientation, r.t));
+        if (r.t >= 1.0f)
+        {
+            MyResources[i + 1].currentResource = r;
+            MyResources[i].currentResource = null;
+        }
     }
 }
+
+
+

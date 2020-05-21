@@ -67,7 +67,15 @@ public class ProductionBuildingBuilder : BuilderBase
             currentFactory.transform.Rotate(currentFactory.transform.up, rotationSpeed * d);
 
         if (FactoryIndex == 0)
+        {
+            Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(mouseRay, out hit, playerRange, NodeMask))
+            {
+                currentFactory.transform.position = hit.collider.transform.position;
+            }
             return;
+        }
 
         Ray mouseR = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit h;

@@ -7,6 +7,8 @@ using UnityEngine;
 [RequireComponent(typeof(ProductionBuildingBuilder))]
 public class BuilderManager : MonoBehaviour
 {
+    [SerializeField] GameObject MyUI;
+
     List<BuilderBase> mBuilders = new List<BuilderBase>();
     ProductionBuildingBuilder mProductionBuilder = null;
 
@@ -38,6 +40,24 @@ public class BuilderManager : MonoBehaviour
         mBuilders.Add(mProductionBuilder);
     }
 
+    private void Start()
+    {
+        EventManager.current.OpenBuildMenu += OpenUI;
+        EventManager.current.CloseMenu += CloseUI;
+    }
+
+    #region Event Functions
+    public void OpenUI()
+    {
+        MyUI.SetActive(true);
+    }
+
+    public void CloseUI()
+    {
+        MyUI.SetActive(false);
+    }
+    #endregion
+
     // Update is called once per frame
     void Update()
     {
@@ -67,41 +87,6 @@ public class BuilderManager : MonoBehaviour
             mBuilders[(int)currentAction].UpdateObject();
         }
 
-    }
-
-    public void MakeBelt()
-    {
-        //var belt = Instantiate(ConveyorBelt, Vector3.zero, Quaternion.identity).GetComponent<ConveyorBeltSegment>();
-        //belt.ResetPath(slot1.transform, slot2.transform);
-        //
-        //slot1.belt = belt;
-        //slot2.belt = belt;
-        //
-        //slot1 = null;
-        //slot2 = null;
-    }
-
-    public void MakeWire()
-    {
-        //var wire = Instantiate(WireObject, Vector3.zero, Quaternion.identity).GetComponent<Wire>();
-        //wire.ResetPath(node1, node2);
-        //
-        //node1.other = node2;
-        //node2.other = node1;
-        //
-        //node1 = null;
-        //node2 = null;
-    }
-
-    public void MakeExtractor()
-    {
-        //var ext = Instantiate(Extractor, Vector3.zero, Quaternion.identity).GetComponent<ProductionBuilding>();
-        //ext.SetBuildManager(this);
-    }
-    public void MakeConvertor()
-    {
-        //var ext = Instantiate(Convertor, Vector3.zero, Quaternion.identity).GetComponent<ProductionBuilding>();
-        //ext.SetBuildManager(this);
     }
 
     public void SetAction(int action)

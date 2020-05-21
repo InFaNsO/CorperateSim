@@ -11,11 +11,15 @@ public class PlayerDroneControll : MonoBehaviour
     public float normalMoveSpeed = 10;
     public float moveFactor = 0.25f;
 
+    bool HandleInput = true;
+    float factorbackUp = 0;
     float rotationX = 0f;
     float rotationY = 0f;
 
+
     DroneActions droneInputs;
     Vector2 moveInput = new Vector2();
+    Vector2 mousePos = new Vector2();
     bool isMoving = false;
 
     float altitude = 0.0f;
@@ -23,18 +27,6 @@ public class PlayerDroneControll : MonoBehaviour
 
     float speedBuf = 0.0f;
     bool isSpeedBuf = false;
-
-
-
-
-
-
-
-
-
-
-
-
 
     [SerializeField] CinemachineFreeLook myCam = null;
     [SerializeField] Transform cameraTransform = null;
@@ -49,12 +41,17 @@ public class PlayerDroneControll : MonoBehaviour
     private void Awake()
     {
         //cameraTransform = myCam.transform;
+        CameraSensitivity = 1.0f / CameraSensitivity;
 
+        #region Input Setup
         droneInputs = new DroneActions();
         droneInputs.DroneMap.Move.started += ctx => isMoving = true;
         droneInputs.DroneMap.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         droneInputs.DroneMap.Move.canceled += ctx => isMoving = false;
-        
+
+        droneInputs.DroneMap.Look.performed += ctx => mousePos = ctx.ReadValue<Vector2>();
+        droneInputs.DroneMap.Look.canceled += ctx => mousePos = new Vector2();
+
         droneInputs.DroneMap.Altitude.started += ctx => isUpDown = true;
         droneInputs.DroneMap.Altitude.performed += ctx => altitude = ctx.ReadValue<float>();
         droneInputs.DroneMap.Altitude.canceled += ctx => isUpDown = false;
@@ -64,28 +61,67 @@ public class PlayerDroneControll : MonoBehaviour
         droneInputs.DroneMap.Speed.canceled += ctx => isSpeedBuf = true;
 
         droneInputs.Enable();
+        #endregion
 
         myRb = GetComponent<Rigidbody>();
     }
 
     void Start()
     {
-        
+        myCam.enabled = false;
+
+        #region Hooks For Events
+        EventManager.current.OpenBuildMenu += MenuOpen;
+        EventManager.current.OpenBuildingInfoMenu += MenuOpen;
+        EventManager.current.CloseMenu += MenuClose;
+        #endregion
     }
 
-    Vector3 prevForward;
+    #region Event Functions
+    public void MenuOpen(ProductionBuilding b)
+    {
+        MenuOpen();
+    }
+    public void MenuOpen()
+    {
+        HandleInput = false;
+        factorbackUp = moveFactor;
+        moveFactor = 0f;
+        droneInputs.Disable();
+    }
+    public void MenuClose()
+    {
+        HandleInput = true;
+        moveFactor = factorbackUp;
+        droneInputs.Enable();
+    }
+
+    #endregion
 
     void Update()
     {
+        if (!HandleInput)
+            return;
+
         //turn
-        Vector3 delta = new Vector3(cameraTransform.forward.x, 0.0f, cameraTransform.forward.z);
-        transform.LookAt(transform.position + delta.normalized);
+        //Vector3 delta = new Vector3(cameraTransform.forward.x, 0.0f, cameraTransform.forward.z);
+        //transform.LookAt(transform.position + delta.normalized);
+
+        if (!UI.gameObject.activeSelf)
+        {
+            rotationX += mousePos.x * CameraSensitivity;
+            transform.rotation = Quaternion.AngleAxis(rotationX, Vector3.up);
+            rotationY += -mousePos.y * CameraSensitivity;
+            rotationY = Mathf.Clamp(rotationY, -90, 90);
+            transform.rotation *= Quaternion.AngleAxis(rotationY, Vector3.right);
+            
+        }
 
         DoDampening();
         if(isSpeedBuf && isMoving)
         {
-            transform.position += transform.forward * (normalMoveSpeed * moveFactor) * moveInput.y * Time.deltaTime;
-            transform.position += transform.right * (normalMoveSpeed * moveFactor) * moveInput.x * Time.deltaTime;
+            transform.position += transform.forward * (normalMoveSpeed + (normalMoveSpeed* moveFactor)) * moveInput.y * Time.deltaTime;
+            transform.position += transform.right * (normalMoveSpeed + (normalMoveSpeed * moveFactor)) * moveInput.x * Time.deltaTime;
         }
         else if(isMoving)
         {
@@ -103,13 +139,13 @@ public class PlayerDroneControll : MonoBehaviour
 
         if(UI.gameObject.activeSelf)
         {
-            myCam.enabled = false;
+            //myCam.enabled = false;
             droneInputs.Disable();
             return;
         }
         else if(!UI.gameObject.activeSelf && !myCam.enabled)
         {
-            myCam.enabled = true;
+            //myCam.enabled = true;
             droneInputs.Enable();
         }
 

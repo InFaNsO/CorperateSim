@@ -66,6 +66,8 @@ MonoBehaviour:
   - {fileID: 2856828971604698647}
   - {fileID: 6589047607701613381}
   outPut: {fileID: 6760600858707896771}
+  resourceObject: {fileID: 0}
+  resourceSpawnPoint: {fileID: 0}
 --- !u!114 &6874009501906500013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,7 +109,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8530601639946999636}
   - component: {fileID: 2031252791391265517}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Main
   m_TagString: Untagged
   m_Icon: {fileID: 0}

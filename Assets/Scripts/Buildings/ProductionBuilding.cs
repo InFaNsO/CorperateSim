@@ -23,10 +23,13 @@ public class ProductionBuilding : MonoBehaviour
     List<GameObject> inCommingResourcesToBeDestroyed = new List<GameObject>();
     [SerializeField] Transform resourceSpawnPoint = null;
 
+    float nextDispachTime = 0;
+    float timeDiff = 1;
+
     void Start()
     {
         //ForTEsting
-        SetRecipie(RecipeBook[0].finalProduct.item);
+        //SetRecipie(RecipeBook[0].finalProduct.item);
     }
 
     void Update()
@@ -51,8 +54,10 @@ public class ProductionBuilding : MonoBehaviour
         OutPutSlot.currentQuantity = (uint)Mathf.Min(OutPutSlot.maxQuantity, OutPutSlot.currentQuantity);
         currentQ = OutPutSlot.currentQuantity;
 
-        if (outPut.belt && OutPutSlot.currentQuantity > 0)
+        if (outPut.belt && Time.time > nextDispachTime && OutPutSlot.currentQuantity > 0)
         {
+            if (outPut.belt.HasResource())
+                return;
             //check if the initial position is free then add
             //assuming its free
             var go = Instantiate(ro, resourceSpawnPoint.position, resourceSpawnPoint.rotation);
@@ -60,6 +65,7 @@ public class ProductionBuilding : MonoBehaviour
             r.myCurrentBelt = outPut.belt;
             r.SetPath();
             OutPutSlot.currentQuantity -= 1;
+            nextDispachTime = Time.time + timeDiff;
         }
     }
 
@@ -115,6 +121,8 @@ public class ProductionBuilding : MonoBehaviour
 
     public void AddResource(GameObject resource)
     {
+        if (!recipe)
+            return;
         var r = resource.GetComponent<Resource>();
         for(int i = 0; i < recipe.Ingredients.Count; ++i)
         {

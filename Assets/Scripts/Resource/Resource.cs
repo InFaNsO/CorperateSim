@@ -8,12 +8,15 @@ public class Resource : MonoBehaviour
     List<OrientedPoint> myPath = new List<OrientedPoint>();
     public ConveyorBeltSegment myCurrentBelt;
 
+    public int pointIndex = -1;
+
     public bool stopPath = false;
 
-    float startTime = 0.0f;
+    public float startTime = 0.0f;
     float offset = 1f;
 
-    Rigidbody myRB = null;
+    public Rigidbody myRB = null;
+    public float t = 0f;
 
     public void Start()
     {
@@ -35,17 +38,19 @@ public class Resource : MonoBehaviour
         if (stopPath)
             return;
 
+        return;
+
         var opCurr = myPath[0];
         var opNext = myPath[1];
-        float t = Time.time - startTime / (myCurrentBelt.TimeToReachNextPoint * 2f);
+        t = Time.time - startTime / (myCurrentBelt.TimeToReachNextPoint * 2f);
 
         var p = Vector3.Lerp(opCurr.position, opNext.position, t);
         p.y += offset;
-        transform.position = p;
-        transform.rotation = Quaternion.Slerp(opCurr.orientation, opNext.orientation, t);
+        //transform.position = p;
+        //transform.rotation = Quaternion.Slerp(opCurr.orientation, opNext.orientation, t);
 
-        //myRB.MovePosition(p);
-        //myRB.MoveRotation(opNext.orientation);
+        myRB.MovePosition(p);
+        myRB.MoveRotation(opNext.orientation);
 
         //if ((transform.position - myPath[1].position).sqrMagnitude < 1.0f)
         //    myPath.RemoveAt(0);
@@ -67,23 +72,23 @@ public class Resource : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         var inputSlot = other.GetComponent<ConveyorInputSlot>();
         if(inputSlot)
         {
-            if(inputSlot.GetComponentInParent<ProductionBuilding>())
+            if (inputSlot.GetComponentInParent<ProductionBuilding>())
                 inputSlot.GetComponentInParent<ProductionBuilding>().AddResource(gameObject);
-            else if(inputSlot.GetComponentInParent<Pole>())
+            else if (inputSlot.GetComponentInParent<Pole>())
             {
                 var pole = inputSlot.GetComponentInParent<Pole>();
-                if(pole.BeltOut)
+                if (pole.BeltOut)
                 {
                     myCurrentBelt = pole.BeltOut;
                     SetPath();
                 }
             }
-            else if(inputSlot.GetComponentInParent<ConveyorSpliter>())
+            else if (inputSlot.GetComponentInParent<ConveyorSpliter>())
             {
                 var spliter = inputSlot.GetComponentInParent<ConveyorSpliter>();
                 spliter.SetResourceNextPath(this);
@@ -91,7 +96,7 @@ public class Resource : MonoBehaviour
 
             return;
         }
-        var factoryOutput = other.GetComponent<ConveyorInputSlot>();
+        var factoryOutput = other.GetComponent<ConveyorOutputSlot>();
         if(factoryOutput)
         {
             Debug.Log("Created by factory " + factoryOutput.name);
@@ -102,14 +107,16 @@ public class Resource : MonoBehaviour
 
     public void SetPath()
     {
-        myPath.Clear();
-        var p = myCurrentBelt.myPoints;//path.CalculateEvenlySpaceOrientedPoints(0.1f);
-        for(int i = 0; i < p.Length; ++i)
-        {
-            myPath.Add(p[i]);
-        }
+        myCurrentBelt.AddResource(this);
 
-        startTime = Time.time;
+        //myPath.Clear();
+        //var p = myCurrentBelt.myPoints;//path.CalculateEvenlySpaceOrientedPoints(0.1f);
+        //for(int i = 0; i < p.Length; ++i)
+        //{
+        //    myPath.Add(p[i]);
+        //}
+        //
+        //startTime = Time.time;
     }
 }
 
