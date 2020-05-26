@@ -5,6 +5,11 @@ using UnityEngine.Assertions.Must;
 
 public class ProductionBuilding : MonoBehaviour
 {
+    [SerializeField]
+    ProductionMachine mMachineType = ProductionMachine.Refiner;
+
+    public ProductionMachine MachineType { get { return mMachineType; } }
+
     public Recipe recipe = null;
     [SerializeField] public List<Recipe> RecipeBook;
     Item OutPutSlot;
@@ -61,6 +66,7 @@ public class ProductionBuilding : MonoBehaviour
             //check if the initial position is free then add
             //assuming its free
             var go = Instantiate(ro, resourceSpawnPoint.position, resourceSpawnPoint.rotation);
+            go.SetActive(true);
             var r = go.GetComponent<Resource>();
             r.myCurrentBelt = outPut.belt;
             r.SetPath();
@@ -83,6 +89,14 @@ public class ProductionBuilding : MonoBehaviour
             if (RecipeBook[i].finalProduct.item == finalProduct)
             {
                 recipe = Instantiate(RecipeBook[i]);
+                if(InputSlots.Count > 0)
+                {
+                    foreach(var slot in InputSlots)
+                    {
+                        Destroy(slot);
+                    }
+                    InputSlots.Clear();
+                }
                 for (int j = 0; j < recipe.Ingredients.Count; ++j)
                 {
                     InputSlots.Add(Instantiate(recipe.Ingredients[j].item));
@@ -92,11 +106,11 @@ public class ProductionBuilding : MonoBehaviour
                 OutPutSlot = Instantiate(recipe.finalProduct.item);
                 if (OutPutSlot.currentQuantity > 0)
                     OutPutSlot.currentQuantity = 0;
-                //forTesting();
+
+                SetResourceObject();
                 break;
             }
         }
-        SetResourceObject();
     }
 
     void SetResourceObject()
@@ -108,6 +122,7 @@ public class ProductionBuilding : MonoBehaviour
         ro.GetComponent<Resource>().item = recipe.finalProduct.item;
         ro.GetComponent<MeshFilter>().sharedMesh = recipe.finalProduct.item.model;
         ro.GetComponent<MeshRenderer>().material = recipe.finalProduct.item.mat;
+        ro.SetActive(false);
     }
 
     public void ShutDown()

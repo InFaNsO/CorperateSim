@@ -2,64 +2,52 @@
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 
 public class ConveyorSpliter : MonoBehaviour
 {
-    [SerializeField] ConveyorInputSlot inputSlot;
-    [SerializeField] ConveyorOutputSlot outputSlotFront;
-    [SerializeField] ConveyorOutputSlot outputSlotLeft;
-    [SerializeField] ConveyorOutputSlot outputSlotRight;
+    [SerializeField] ConveyorInputSlot inputSlot = null;
+    [SerializeField] ConveyorOutputSlot outputSlotFront = null;
+    [SerializeField] ConveyorOutputSlot outputSlotLeft = null;
+    [SerializeField] ConveyorOutputSlot outputSlotRight = null;
 
-    enum Direction
-    {
-        Left,
-        Front,
-        Right
-    }
+    ConveyorBeltSegment nextBelt = null;
 
-    Direction nextResourceDirection = Direction.Left;
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        
+        if (nextBelt)
+            return;
+        if (outputSlotLeft.belt)
+            nextBelt = outputSlotLeft.belt;
+        else if (outputSlotFront.belt)
+            nextBelt = outputSlotFront.belt;
+        else if (outputSlotRight.belt)
+            nextBelt = outputSlotRight.belt;
+    }
+
+    void UpdateBelt()
+    {
+        if(nextBelt == outputSlotLeft.belt)
+        {
+            nextBelt = outputSlotFront.belt ? outputSlotFront.belt : outputSlotRight.belt ? outputSlotRight.belt : nextBelt;
+        }
+        else if (nextBelt == outputSlotFront.belt)
+        {
+            nextBelt = outputSlotRight.belt ? outputSlotFront.belt : outputSlotLeft.belt ? outputSlotLeft.belt : nextBelt;
+        }
+        else if (nextBelt == outputSlotRight.belt)
+        {
+            nextBelt = outputSlotLeft.belt ? outputSlotLeft.belt : outputSlotFront.belt ? outputSlotFront.belt : nextBelt;
+        }
     }
 
     public void SetResourceNextPath(Resource resource)
     {
-        resource.myCurrentBelt = null;
-        int count = 0;
-        while (count < 2)
-        {
-            if (nextResourceDirection == Direction.Left)
-            {
-                if (outputSlotLeft.belt)
-                    resource.myCurrentBelt = outputSlotLeft.belt;
-                nextResourceDirection = Direction.Front;
-            }
-            if (nextResourceDirection == Direction.Front && !resource.myCurrentBelt)
-            {
-                if (outputSlotFront.belt)
-                    resource.myCurrentBelt = outputSlotFront.belt;
-                nextResourceDirection = Direction.Right;
-            }
-            if (nextResourceDirection == Direction.Right && !resource.myCurrentBelt)
-            {
-                if (outputSlotRight.belt)
-                    resource.myCurrentBelt = outputSlotRight.belt;
-                nextResourceDirection = Direction.Left;
-            }
+        if (!nextBelt || !resource)
+            return;
 
-            count++;
-        }
-        if(resource.myCurrentBelt)
-            resource.SetPath();
+        if(!nextBelt.HasResource())
+            resource.ShiftBelt(nextBelt);
+        UpdateBelt();
     }
 }

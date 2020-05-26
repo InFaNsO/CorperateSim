@@ -26,4 +26,5 @@ public class Item : ScriptableObject
     public Sprite icon;
     public Mesh model;
     public Material mat;
+    public float HeightOffset = 1.0f;
 }

@@ -23,11 +23,9 @@ public class ConveyorBeltSegment : MonoBehaviour
 
     [SerializeField] bool remake;
 
-    public float TimeToReachNextPoint = 4.0f;
+    public float TimeToReachNextPoint = 1.0f;
 
-    [Tooltip("Change this to upgrade with the level of belt")]
-    public float maxVel = 0.01f;
-
+    [SerializeField]float PointDistance = 1f;
 
     class ResourceData
     {
@@ -35,7 +33,6 @@ public class ConveyorBeltSegment : MonoBehaviour
         public Resource currentResource = null;
     }
     List<ResourceData> MyResources = new List<ResourceData>();
-    List<Resource> UnAttendedResource = new List<Resource>();
 
     public bool HasResource()
     {
@@ -44,12 +41,11 @@ public class ConveyorBeltSegment : MonoBehaviour
     public void AddResource(Resource r)
     {
         r.pointIndex = -1;
-        if (MyResources[0].currentResource = null)
+        if (MyResources[0].currentResource == null)
         {
             MyResources[0].currentResource = r;
+            r.pointIndex = 0;
         }
-        else
-            UnAttendedResource.Add(r);
     }
 
     private void Awake()
@@ -72,7 +68,7 @@ public class ConveyorBeltSegment : MonoBehaviour
         endPos = end;
         path = new Path(endPos.transform, startPos.transform);
         MakeMesh();
-        myPoints = path.CalculateEvenlySpaceOrientedPoints(2f);
+        myPoints = path.CalculateEvenlySpaceOrientedPoints(PointDistance);
 
         MyResources.Clear();
         for(int i = 0; i < myPoints.Length; ++i)
@@ -183,7 +179,6 @@ public class ConveyorBeltSegment : MonoBehaviour
         }
     }
 
-
     private void Update()
     {
         for(int i = 1; i < MyResources.Count; ++i)
@@ -193,25 +188,26 @@ public class ConveyorBeltSegment : MonoBehaviour
                 if(MyResources[i-1].currentResource)
                 {
                     //move this to current
-                    if (MyResources[i - 1].currentResource.t != 0f)
+                    if (MyResources[i - 1].currentResource.t >= 1f)
                         SetResource(i - 1);
 
                     MoveCurrentResource(i - 1);
                 }
             }
         }
+    }
 
-        if(UnAttendedResource.Count > 0 && MyResources[0].currentResource == null)
-        {
-            MyResources[0].currentResource = UnAttendedResource[0];
-            UnAttendedResource.RemoveAt(0);
-        }
+    public void RemoveResourceAtIndex(int i)
+    {
+        MyResources[i].currentResource.t = 1f;
+        MyResources[i].currentResource = null;
     }
 
     void SetResource(int i)
     {
         var r = MyResources[i].currentResource;
         r.t = 0f;
+        r.pointIndex = i;
         r.startTime = Time.time;
     }
     void MoveCurrentResource(int i)
@@ -219,17 +215,18 @@ public class ConveyorBeltSegment : MonoBehaviour
         var r = MyResources[i].currentResource;
         var opCurr = MyResources[i].point;
         var opNext = MyResources[i + 1].point;
-        r.t = Time.time - r.startTime / (TimeToReachNextPoint * 2f);
+        r.t = (Time.time - r.startTime) / (TimeToReachNextPoint);
 
         var p = Vector3.Lerp(opCurr.position, opNext.position, r.t);
-        //p.y += 0.2f;
-        r.transform.position = p;
-        r.transform.rotation = Quaternion.Slerp(opCurr.orientation, opNext.orientation, r.t);
+        p.y += r.item.HeightOffset;
+        //r.transform.position = p;
+        //r.transform.rotation = Quaternion.Slerp(opCurr.orientation, opNext.orientation, r.t);
 
-        //r.myRB.MovePosition(p);
-        //r.myRB.MoveRotation(Quaternion.Slerp(opCurr.orientation, opNext.orientation, r.t));
+        r.myRB.MovePosition(p);
+        r.myRB.MoveRotation(Quaternion.Slerp(opCurr.orientation, opNext.orientation, r.t));
         if (r.t >= 1.0f)
         {
+            r.pointIndex = i + 1;
             MyResources[i + 1].currentResource = r;
             MyResources[i].currentResource = null;
         }

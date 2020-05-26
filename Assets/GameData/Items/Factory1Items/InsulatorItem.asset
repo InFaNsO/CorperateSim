@@ -16,4 +16,6 @@ MonoBehaviour:
   currentQuantity: 0
   maxQuantity: 50
   icon: {fileID: 21300000, guid: 71fb8b3242693164dbb4e3867271daf7, type: 3}
-  model: {fileID: 0}
+  model: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+  mat: {fileID: 2100000, guid: 8d530ffe6c4968843806085897955b9d, type: 2}
+  HeightOffset: 1

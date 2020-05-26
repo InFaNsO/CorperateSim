@@ -9,7 +9,9 @@ public class ExtractorNodeChecker : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         var extractor = other.GetComponentInParent<ProductionBuilding>();
-        if(extractor)
+        if (extractor && extractor.MachineType == ProductionMachine.Extractor)
+        {
             extractor.SetRecipie(node.mType);
+        }
     }
 }

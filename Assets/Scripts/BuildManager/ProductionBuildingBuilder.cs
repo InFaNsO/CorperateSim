@@ -62,6 +62,9 @@ public class ProductionBuildingBuilder : BuilderBase
             }
         }
 
+        if (!currentFactory)
+            return;
+
         var d = Input.GetAxis("MouseScroll");
         if (d != 0f)
             currentFactory.transform.Rotate(currentFactory.transform.up, rotationSpeed * d);

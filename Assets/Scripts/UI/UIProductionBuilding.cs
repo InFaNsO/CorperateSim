@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using Michsky.UI.ModernUIPack;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +12,16 @@ public class UIProductionBuilding : MonoBehaviour
     [SerializeField] GameObject Parent;
     [SerializeField] GameObject Icon;
 
-
+    [System.Serializable]
+    public struct InfoData
+    {
+        public Image i;
+        public TMP_Text txt;
+    }
+    [SerializeField] List<InfoData> IngredientsImage = new List<InfoData>();
+    [SerializeField] InfoData FinalProduct;
+    [SerializeField] GameObject MainInfoView;
+    [SerializeField] GameObject AlternateInfoView;
 
     public ProductionBuilding currentBuilding;
     public List<GameObject> objects;
@@ -27,8 +38,8 @@ public class UIProductionBuilding : MonoBehaviour
     public void OpenUI(ProductionBuilding building)
     {
         MyUI.SetActive(true);
-        PopulateArea(building.RecipeBook);
         currentBuilding = building;
+        PopulateRecipieArea(building.RecipeBook);
     }
 
     public void CloseUI()
@@ -39,7 +50,7 @@ public class UIProductionBuilding : MonoBehaviour
     }
     #endregion
 
-    void PopulateArea(List<Recipe> RecipieBook)
+    void PopulateRecipieArea(List<Recipe> RecipieBook)
     {
         int startX = -550;
         int buff = 350;
@@ -66,6 +77,42 @@ public class UIProductionBuilding : MonoBehaviour
         }
     }
 
+    public void PopulateInfoArea()
+    {
+        if(currentBuilding.recipe)
+        {
+            HasRecipie();
+            MainInfoView.SetActive(true);
+            AlternateInfoView.SetActive(false);
+        }
+        else
+        {
+            MainInfoView.SetActive(false);
+            AlternateInfoView.SetActive(true);
+        }
+    }
+
+    void HasRecipie()
+    {
+        for (int j = 0; j < IngredientsImage.Count; ++j)
+        {
+            if (j < currentBuilding.recipe.Ingredients.Count)
+            {
+                IngredientsImage[j].i.sprite = currentBuilding.recipe.Ingredients[j].item.icon;
+                IngredientsImage[j].i.color = Color.white;
+                IngredientsImage[j].txt.text = currentBuilding.recipe.Ingredients[j].item.name;
+            }
+            else
+            {
+                IngredientsImage[j].i.color = new Vector4(0f, 0f, 0f, 0f);
+                IngredientsImage[j].txt.text = "";
+            }
+        }
+
+        FinalProduct.i.sprite = currentBuilding.recipe.finalProduct.item.icon;
+        FinalProduct.txt.text = currentBuilding.recipe.finalProduct.item.name;
+    }
+
     public void OnRecipieSelect(Item i)
     {
         //set the recipie on building
@@ -82,5 +129,7 @@ public class UIProductionBuilding : MonoBehaviour
 
         objects.Clear();
     }
+
+
 
 }

@@ -23,6 +23,13 @@ public class Resource : MonoBehaviour
         myRB = GetComponent<Rigidbody>();
     }
 
+    public void ShiftBelt(ConveyorBeltSegment belt)
+    {
+        myCurrentBelt.RemoveResourceAtIndex(pointIndex);
+        myCurrentBelt = belt;
+        SetPath();
+    }
+
     public void Update()
     {
         if (myPath.Count <= 1)
@@ -61,15 +68,6 @@ public class Resource : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (myCurrentBelt)
-        {
-            var maxV = myCurrentBelt.maxVel;
-            Vector3 vel = myRB.velocity;
-            vel.x = Mathf.Clamp(vel.x, -maxV, maxV);
-            vel.y = Mathf.Clamp(vel.y, -maxV, maxV);
-            vel.z = Mathf.Clamp(vel.z, -maxV, maxV);
-            myRB.velocity = vel;
-        }
     }
 
     private void OnTriggerStay(Collider other)
@@ -77,6 +75,8 @@ public class Resource : MonoBehaviour
         var inputSlot = other.GetComponent<ConveyorInputSlot>();
         if(inputSlot)
         {
+            
+
             if (inputSlot.GetComponentInParent<ProductionBuilding>())
                 inputSlot.GetComponentInParent<ProductionBuilding>().AddResource(gameObject);
             else if (inputSlot.GetComponentInParent<Pole>())
@@ -93,13 +93,12 @@ public class Resource : MonoBehaviour
                 var spliter = inputSlot.GetComponentInParent<ConveyorSpliter>();
                 spliter.SetResourceNextPath(this);
             }
-
             return;
         }
         var factoryOutput = other.GetComponent<ConveyorOutputSlot>();
         if(factoryOutput)
         {
-            Debug.Log("Created by factory " + factoryOutput.name);
+            //Debug.Log("Created by factory " + factoryOutput.name);
            // myCurrentBelt = factoryOutput.belt;
            // SetPath();
         }
@@ -108,15 +107,6 @@ public class Resource : MonoBehaviour
     public void SetPath()
     {
         myCurrentBelt.AddResource(this);
-
-        //myPath.Clear();
-        //var p = myCurrentBelt.myPoints;//path.CalculateEvenlySpaceOrientedPoints(0.1f);
-        //for(int i = 0; i < p.Length; ++i)
-        //{
-        //    myPath.Add(p[i]);
-        //}
-        //
-        //startTime = Time.time;
     }
 }
 

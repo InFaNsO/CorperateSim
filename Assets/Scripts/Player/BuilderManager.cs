@@ -5,13 +5,14 @@ using UnityEngine;
 [RequireComponent(typeof(ConveyorBuilder))]
 [RequireComponent(typeof(ConveyorPoleBuilder))]
 [RequireComponent(typeof(ProductionBuildingBuilder))]
+[RequireComponent(typeof(FoundationBaseBuilder))]
 public class BuilderManager : MonoBehaviour
 {
     [SerializeField] GameObject MyUI;
 
     List<BuilderBase> mBuilders = new List<BuilderBase>();
     ProductionBuildingBuilder mProductionBuilder = null;
-
+    FoundationBaseBuilder mFoundationBaseBuilder = null;
     public enum Action
     {
         none = -1,
@@ -20,24 +21,30 @@ public class BuilderManager : MonoBehaviour
         MakingWire = 2,
         MakingElectricPole = 3,
         MakingConveyorSplitter = 4,
-        MakingProductionBuilding = 5 //has to be in the end
+        MakingProductionBuilding = 5,
+        maxProductionBuilding = 10,
+        MakingFoundationBase = 11,
+        maxFoundationBase = 12
     }
-
-    int factoryNum = -1;
-
-
     Action currentAction = Action.none;
 
 
     private void Awake()
     {
         mProductionBuilder = GetComponent<ProductionBuildingBuilder>();
+        mFoundationBaseBuilder = GetComponent<FoundationBaseBuilder>();
         mBuilders.Add(GetComponent<ConveyorBuilder>());
         mBuilders.Add(GetComponent<ConveyorPoleBuilder>());
         mBuilders.Add(GetComponent<WireBuilder>());
         mBuilders.Add(GetComponent<ElectricPoleBuilder>());
         mBuilders.Add(GetComponent<ConveyorSpliterBuilder>());
         mBuilders.Add(mProductionBuilder);
+        int diff = ((int)Action.maxProductionBuilding - (int)Action.MakingProductionBuilding);
+        for (int i = 0; i < diff; ++i)
+            mBuilders.Add(new BuilderBase());
+        mBuilders.Add(mFoundationBaseBuilder);
+        for (int i = 0; i < ((int)Action.maxFoundationBase - (int)Action.MakingFoundationBase); ++i)
+            mBuilders.Add(new BuilderBase());
     }
 
     private void Start()
@@ -91,13 +98,17 @@ public class BuilderManager : MonoBehaviour
 
     public void SetAction(int action)
     {
-        if(action >= (int)Action.MakingProductionBuilding)
+        if(action >= (int)Action.MakingProductionBuilding && action <= (int)Action.maxProductionBuilding)
         {
             mProductionBuilder.SetFactory(action - (int)Action.MakingProductionBuilding);
             currentAction = Action.MakingProductionBuilding;
         }
+        else if(action >= (int)Action.MakingFoundationBase && action <= (int)Action.maxFoundationBase)
+        {
+            mFoundationBaseBuilder.SetFoundation(action - (int)Action.MakingFoundationBase);
+            currentAction = Action.MakingFoundationBase;
+        }
         else
             currentAction = (Action)(action);
     }
-
 }
