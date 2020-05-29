@@ -26,6 +26,14 @@ public class UIProductionBuilding : MonoBehaviour
     public ProductionBuilding currentBuilding;
     public List<GameObject> objects;
 
+    private void Awake()
+    {
+        //EventManager.current.OpenBuildingInfoMenu += OpenUI;
+        //EventManager.current.CloseMenu += CloseUI;
+        //if (currentBuilding)
+        //    EventManager.current.OnBuildingInfoMenu(currentBuilding);
+    }
+
     private void Start()
     {
         EventManager.current.OpenBuildingInfoMenu += OpenUI;

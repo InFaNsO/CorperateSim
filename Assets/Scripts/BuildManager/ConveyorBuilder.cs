@@ -86,8 +86,9 @@ public class ConveyorBuilder : BuilderBase
             return false;
 
         if (currentBelt)
+        {
             Destroy(currentBelt);
-
+        }
         var belt = Instantiate(buildObject, Vector3.zero, Quaternion.identity).GetComponent<ConveyorBeltSegment>();
         belt.ResetPath(slot1, slot2);
 
@@ -96,7 +97,8 @@ public class ConveyorBuilder : BuilderBase
 
         mPoleMaker.currentPole = null;
 
-        CustomReset();
+        slot1 = null;
+        slot2 = null;
 
         return true;
     }

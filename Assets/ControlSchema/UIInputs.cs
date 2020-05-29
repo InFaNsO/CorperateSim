@@ -41,6 +41,14 @@ public class @UIInputs : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""DestroyObject"",
+                    ""type"": ""Button"",
+                    ""id"": ""94eb2315-17d1-461c-a670-b12ea73cf5cb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -76,6 +84,17 @@ public class @UIInputs : IInputActionCollection, IDisposable
                     ""action"": ""CloseMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""382e83e2-749b-4b51-8d2c-44c798f5b9e1"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyBoard"",
+                    ""action"": ""DestroyObject"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -99,6 +118,7 @@ public class @UIInputs : IInputActionCollection, IDisposable
         m_UIActions_BuildMenu = m_UIActions.FindAction("BuildMenu", throwIfNotFound: true);
         m_UIActions_BuildingMenue = m_UIActions.FindAction("BuildingMenue", throwIfNotFound: true);
         m_UIActions_CloseMenu = m_UIActions.FindAction("CloseMenu", throwIfNotFound: true);
+        m_UIActions_DestroyObject = m_UIActions.FindAction("DestroyObject", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -151,6 +171,7 @@ public class @UIInputs : IInputActionCollection, IDisposable
     private readonly InputAction m_UIActions_BuildMenu;
     private readonly InputAction m_UIActions_BuildingMenue;
     private readonly InputAction m_UIActions_CloseMenu;
+    private readonly InputAction m_UIActions_DestroyObject;
     public struct UIActionsActions
     {
         private @UIInputs m_Wrapper;
@@ -158,6 +179,7 @@ public class @UIInputs : IInputActionCollection, IDisposable
         public InputAction @BuildMenu => m_Wrapper.m_UIActions_BuildMenu;
         public InputAction @BuildingMenue => m_Wrapper.m_UIActions_BuildingMenue;
         public InputAction @CloseMenu => m_Wrapper.m_UIActions_CloseMenu;
+        public InputAction @DestroyObject => m_Wrapper.m_UIActions_DestroyObject;
         public InputActionMap Get() { return m_Wrapper.m_UIActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -176,6 +198,9 @@ public class @UIInputs : IInputActionCollection, IDisposable
                 @CloseMenu.started -= m_Wrapper.m_UIActionsActionsCallbackInterface.OnCloseMenu;
                 @CloseMenu.performed -= m_Wrapper.m_UIActionsActionsCallbackInterface.OnCloseMenu;
                 @CloseMenu.canceled -= m_Wrapper.m_UIActionsActionsCallbackInterface.OnCloseMenu;
+                @DestroyObject.started -= m_Wrapper.m_UIActionsActionsCallbackInterface.OnDestroyObject;
+                @DestroyObject.performed -= m_Wrapper.m_UIActionsActionsCallbackInterface.OnDestroyObject;
+                @DestroyObject.canceled -= m_Wrapper.m_UIActionsActionsCallbackInterface.OnDestroyObject;
             }
             m_Wrapper.m_UIActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -189,6 +214,9 @@ public class @UIInputs : IInputActionCollection, IDisposable
                 @CloseMenu.started += instance.OnCloseMenu;
                 @CloseMenu.performed += instance.OnCloseMenu;
                 @CloseMenu.canceled += instance.OnCloseMenu;
+                @DestroyObject.started += instance.OnDestroyObject;
+                @DestroyObject.performed += instance.OnDestroyObject;
+                @DestroyObject.canceled += instance.OnDestroyObject;
             }
         }
     }
@@ -207,5 +235,6 @@ public class @UIInputs : IInputActionCollection, IDisposable
         void OnBuildMenu(InputAction.CallbackContext context);
         void OnBuildingMenue(InputAction.CallbackContext context);
         void OnCloseMenu(InputAction.CallbackContext context);
+        void OnDestroyObject(InputAction.CallbackContext context);
     }
 }

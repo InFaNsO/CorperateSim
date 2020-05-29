@@ -21,6 +21,7 @@ public class Resource : MonoBehaviour
     public void Start()
     {
         myRB = GetComponent<Rigidbody>();
+        Debug.Assert(myRB, "Couldnot find the ridgid body");
     }
 
     public void ShiftBelt(ConveyorBeltSegment belt)
@@ -32,6 +33,7 @@ public class Resource : MonoBehaviour
 
     public void Update()
     {
+        return;
         if (myPath.Count <= 1)
         {
             myRB.velocity = Vector3.zero;
@@ -74,9 +76,7 @@ public class Resource : MonoBehaviour
     {
         var inputSlot = other.GetComponent<ConveyorInputSlot>();
         if(inputSlot)
-        {
-            
-
+        { 
             if (inputSlot.GetComponentInParent<ProductionBuilding>())
                 inputSlot.GetComponentInParent<ProductionBuilding>().AddResource(gameObject);
             else if (inputSlot.GetComponentInParent<Pole>())

@@ -231,6 +231,19 @@ public class ConveyorBeltSegment : MonoBehaviour
             MyResources[i].currentResource = null;
         }
     }
+
+    private void OnDestroy()
+    {
+        Debug.Log("Something destroyed the Belt");
+//        startPos.belt = null;
+//        endPos.belt = null;
+        
+        for(int i = 0; i < MyResources.Count; ++i)
+        {
+            if (MyResources[i].currentResource)
+                Destroy(MyResources[i].currentResource.gameObject);
+        }
+    }
 }
 
 

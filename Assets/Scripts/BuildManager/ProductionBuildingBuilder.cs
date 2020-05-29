@@ -15,6 +15,7 @@ public class ProductionBuildingBuilder : BuilderBase
     float playerRange = float.MaxValue;
 
     GameObject currentFactory = null;
+    ExtractorNodeChecker prvNChecker = null;
 
     private void Awake()
     {
@@ -53,7 +54,12 @@ public class ProductionBuildingBuilder : BuilderBase
             {
                 if (Physics.Raycast(mouseRay, out hit, playerRange, NodeMask))
                 {
-                    currentFactory = Instantiate(FactoryObjects[FactoryIndex], hit.collider.transform.position, Quaternion.identity);
+                    var ncheck = hit.collider.GetComponent<ExtractorNodeChecker>();
+                    if (!ncheck.myBuilding)
+                    {
+                        prvNChecker = ncheck;
+                        currentFactory = Instantiate(FactoryObjects[FactoryIndex], hit.collider.transform.position, Quaternion.identity);
+                    }
                 }
             }
             else if (Physics.Raycast(mouseRay, out hit, playerRange, GroundMask))
@@ -75,7 +81,13 @@ public class ProductionBuildingBuilder : BuilderBase
             RaycastHit hit;
             if (Physics.Raycast(mouseRay, out hit, playerRange, NodeMask))
             {
-                currentFactory.transform.position = hit.collider.transform.position;
+                var ncheck = hit.collider.GetComponent<ExtractorNodeChecker>();
+                if (!ncheck.myBuilding)
+                {
+                    prvNChecker.myBuilding = null;
+                    prvNChecker = ncheck;
+                    currentFactory.transform.position = hit.collider.transform.position;
+                }
             }
             return;
         }

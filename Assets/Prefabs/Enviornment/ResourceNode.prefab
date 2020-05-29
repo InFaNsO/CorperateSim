@@ -58,6 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   node: {fileID: 5639475974963472084}
+  myBuilding: {fileID: 0}
 --- !u!1 &5639475974963472086
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,7 +276,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5848829085272616499}
   - component: {fileID: 3350964531460615350}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: MainBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}

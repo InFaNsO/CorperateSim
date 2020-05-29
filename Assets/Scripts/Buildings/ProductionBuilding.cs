@@ -68,6 +68,7 @@ public class ProductionBuilding : MonoBehaviour
             var go = Instantiate(ro, resourceSpawnPoint.position, resourceSpawnPoint.rotation);
             go.SetActive(true);
             var r = go.GetComponent<Resource>();
+            r.Start();
             r.myCurrentBelt = outPut.belt;
             r.SetPath();
             OutPutSlot.currentQuantity -= 1;
@@ -148,5 +149,17 @@ public class ProductionBuilding : MonoBehaviour
                 break;
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        for(int i = 0; i < inputs.Count; ++i)
+        {
+            if(inputs[i].belt)
+                Destroy(inputs[i].belt.gameObject);
+        }
+
+        if (outPut.belt)
+            Destroy(outPut.belt.gameObject);
     }
 }

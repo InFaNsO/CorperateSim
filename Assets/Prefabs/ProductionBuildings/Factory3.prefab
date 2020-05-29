@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0375cad227908c1448833072bffbc03e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mMachineType: 1
+  mMachineType: 5
   recipe: {fileID: 0}
   RecipeBook:
   - {fileID: 11400000, guid: 70a314dcd06ce574da7ba166a3d12905, type: 2}

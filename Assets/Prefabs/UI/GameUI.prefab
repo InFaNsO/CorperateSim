@@ -3305,15 +3305,15 @@ MonoBehaviour:
   buttonEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 142434292839893922}
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 788360705557014556}
+        m_MethodName: OpenPanel
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: RecipieWindow
           m_BoolArgument: 0
         m_CallState: 2
   hoverSound: {fileID: 0}
@@ -7618,6 +7618,7 @@ GameObject:
   - component: {fileID: 3151909080144282805}
   - component: {fileID: 3151909080144282804}
   - component: {fileID: 3151909080144282807}
+  - component: {fileID: 8905584159692310133}
   - component: {fileID: 3571089876688403832}
   m_Layer: 5
   m_Name: GameUI
@@ -7710,6 +7711,23 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &8905584159692310133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3151909080144282806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0403bbdaddf49b4dbb4fff5c3aef39c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  names:
+  - ConveyorBelt
+  - ProductionBuilding
+  - FoundationEdge
+  ObjectNameUI: {fileID: 0}
 --- !u!114 &3571089876688403832
 MonoBehaviour:
   m_ObjectHideFlags: 0
