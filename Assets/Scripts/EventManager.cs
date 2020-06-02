@@ -55,6 +55,8 @@ public class EventManager : MonoBehaviour
     public event Action<ProductionBuilding> OpenBuildingInfoMenu;
     public event Action CloseMenu;
     public event Action DestroyObject;
+    public event Action<ProductionBuilding> BuildingPointed;
+    public event Action BuildingNotPointed;
     #endregion
 
     void Update()
@@ -75,6 +77,21 @@ public class EventManager : MonoBehaviour
         if (mDestroyObjects && !mUiOpened)
         {
             DestroyObject?.Invoke();
+        }
+        if(!mUiOpened)
+        {
+            RaycastHit hitInfo;
+            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward,
+                out hitInfo, float.MaxValue, LayerMask.GetMask("ProductionBuilding")))
+            {
+                var building = hitInfo.collider.GetComponentInParent<ProductionBuilding>();
+                if (building)
+                    BuildingPointed?.Invoke(building);
+            }
+            else
+            {
+                BuildingNotPointed?.Invoke();
+            }
         }
         if (mCloseMenu && mUiOpened)
             CloseMenu?.Invoke();

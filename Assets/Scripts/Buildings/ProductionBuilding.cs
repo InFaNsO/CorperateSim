@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using JetBrains.Annotations;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
@@ -11,6 +12,10 @@ public class ProductionBuilding : MonoBehaviour
     public ProductionMachine MachineType { get { return mMachineType; } }
 
     public Recipe recipe = null;
+
+    [SerializeField] public Vector3 UIOffset = new Vector3(0f, 20f, 0f);
+    public Vector3 OffsetUI { get { return transform.position + transform.up * 7f; } }
+    
     [SerializeField] public List<Recipe> RecipeBook;
     Item OutPutSlot;
     List<Item> InputSlots = new List<Item>();
