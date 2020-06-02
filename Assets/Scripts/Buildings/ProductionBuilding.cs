@@ -64,10 +64,8 @@ public class ProductionBuilding : MonoBehaviour
         OutPutSlot.currentQuantity = (uint)Mathf.Min(OutPutSlot.maxQuantity, OutPutSlot.currentQuantity);
         currentQ = OutPutSlot.currentQuantity;
 
-        if (outPut.belt && Time.time > nextDispachTime && OutPutSlot.currentQuantity > 0)
+        if (outPut.belt && Time.time > nextDispachTime && OutPutSlot.currentQuantity > 0 && !outPut.belt.HasResource())
         {
-            if (outPut.belt.HasResource())
-                return;
             //check if the initial position is free then add
             //assuming its free
             var go = Instantiate(ro, resourceSpawnPoint.position, resourceSpawnPoint.rotation);

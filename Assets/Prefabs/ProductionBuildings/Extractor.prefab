@@ -224,7 +224,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6648605083639376942}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.03, y: 1.7, z: 0}
+  m_LocalPosition: {x: -2.03, y: 1.5, z: -0.004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7976537234045368743}
@@ -326,6 +326,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mMachineType: 0
   recipe: {fileID: 0}
+  UIOffset: {x: 0, y: 20, z: 0}
   RecipeBook:
   - {fileID: 11400000, guid: b3888860e0480b94daaca21fa17beb70, type: 2}
   - {fileID: 11400000, guid: bb0ff96905e85c3428f927f612d217dc, type: 2}

@@ -18,3 +18,4 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: c63c78cf3eab13b47a3b7ba9c77ba1de, type: 3}
   model: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   mat: {fileID: 2100000, guid: 8d530ffe6c4968843806085897955b9d, type: 2}
+  HeightOffset: 0.75

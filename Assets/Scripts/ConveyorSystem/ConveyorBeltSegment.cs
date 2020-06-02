@@ -25,7 +25,7 @@ public class ConveyorBeltSegment : MonoBehaviour
 
     public float TimeToReachNextPoint = 1.0f;
 
-    [SerializeField]float PointDistance = 1f;
+    [SerializeField]float PointDistance = 1.5f;
 
     class ResourceData
     {
@@ -71,12 +71,14 @@ public class ConveyorBeltSegment : MonoBehaviour
         myPoints = path.CalculateEvenlySpaceOrientedPoints(PointDistance);
 
         MyResources.Clear();
-        for(int i = 0; i < myPoints.Length; ++i)
+        for(int i = 0; i < myPoints.Length - 1; ++i)
         {
             MyResources.Add(new ResourceData());
             MyResources[i].point = myPoints[i];
         }
-    }
+        MyResources.RemoveAt(0);
+        //MyResources.RemoveAt(0);
+    }   
 
     private void OnValidate()
     {
@@ -177,6 +179,16 @@ public class ConveyorBeltSegment : MonoBehaviour
         {
             Gizmos.DrawSphere(myPoints[i].position, 0.1f);
         }
+
+        for(int i = 0; i < MyResources.Count; ++i)
+        {
+            Gizmos.color = i % 2 == 0 ? Color.red : Color.blue;
+            float rad = PointDistance * 0.5f;// i % 2 == 0 ? 0.5f : 1f;
+            if (i % 2 == 0)
+                Gizmos.DrawSphere(MyResources[i].point.position + Vector3.up, rad);
+            else
+                Gizmos.DrawWireSphere(MyResources[i].point.position + Vector3.up, rad);
+        }
     }
 
     private void Update()
@@ -188,8 +200,8 @@ public class ConveyorBeltSegment : MonoBehaviour
                 if(MyResources[i-1].currentResource)
                 {
                     //move this to current
-                    if (MyResources[i - 1].currentResource.t >= 1f)
-                        SetResource(i - 1);
+                    if (MyResources[i - 1].currentResource.t == 0f)
+                        MyResources[i - 1].currentResource.startTime = Time.time - Time.deltaTime;
 
                     MoveCurrentResource(i - 1);
                 }
@@ -219,13 +231,14 @@ public class ConveyorBeltSegment : MonoBehaviour
 
         var p = Vector3.Lerp(opCurr.position, opNext.position, r.t);
         p.y += r.item.HeightOffset;
-        //r.transform.position = p;
-        //r.transform.rotation = Quaternion.Slerp(opCurr.orientation, opNext.orientation, r.t);
+         r.transform.position = p;
+         r.transform.rotation = Quaternion.Slerp(opCurr.orientation, opNext.orientation, r.t);
 
-        r.myRB.MovePosition(p);
-        r.myRB.MoveRotation(Quaternion.Slerp(opCurr.orientation, opNext.orientation, r.t));
+        //r.myRB.MovePosition(p);
+        //r.myRB.MoveRotation(Quaternion.Slerp(opCurr.orientation, opNext.orientation, r.t));
         if (r.t >= 1.0f)
         {
+            r.t = 0f;
             r.pointIndex = i + 1;
             MyResources[i + 1].currentResource = r;
             MyResources[i].currentResource = null;

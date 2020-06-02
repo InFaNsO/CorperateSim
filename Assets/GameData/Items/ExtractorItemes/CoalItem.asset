@@ -18,3 +18,4 @@ MonoBehaviour:
   icon: {fileID: 0}
   model: {fileID: 0}
   mat: {fileID: 0}
+  HeightOffset: 0.75
