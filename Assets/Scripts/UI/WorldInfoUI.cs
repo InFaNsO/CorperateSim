@@ -50,6 +50,32 @@ public class WorldInfoUI : MonoBehaviour
         }
     }
 
+    public void Update()
+    {
+        if (!currentBuilding)
+            return;
+        if (!currentBuilding.recipe)
+            return;
+
+        for (int j = 0; j < IngredientsImage.Count; ++j)
+        {
+            if (j < currentBuilding.recipe.Ingredients.Count)
+            {
+                IngredientsImage[j].i.sprite = currentBuilding.recipe.Ingredients[j].item.icon;
+                IngredientsImage[j].i.color = Color.white;
+                IngredientsImage[j].txt.text = currentBuilding.recipe.Ingredients[j].item.name + "\\n" + currentBuilding.recipe.Ingredients[j].item.currentQuantity.ToString();
+            }
+            else
+            {
+                IngredientsImage[j].i.color = new Vector4(0f, 0f, 0f, 0f);
+                IngredientsImage[j].txt.text = "";
+            }
+        }
+
+        FinalProduct.i.sprite = currentBuilding.recipe.finalProduct.item.icon;
+        FinalProduct.txt.text = currentBuilding.recipe.finalProduct.item.name + "\\n" + currentBuilding.recipe.finalProduct.item.currentQuantity.ToString();
+    }
+
     void HasRecipie()
     {
         for (int j = 0; j < IngredientsImage.Count; ++j)

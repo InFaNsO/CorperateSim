@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.PackageManager.Requests;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
@@ -152,27 +151,27 @@ public class ConveyorBeltSegment : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        for (int i = 0; i < path.NumSegments; ++i)
-        {
-            var points = path.GetPointsInSegment(i);
-
-            Handles.color = Color.black;
-            Handles.DrawLine(points[1], points[0]);
-            Handles.DrawLine(points[2], points[3]);
-
-            Handles.DrawBezier(points[0], points[3], points[1], points[2], Color.green, null, 2);
-        }
-
-        Handles.color = Color.red;
-        for (int i = 0; i < path.NumPoints; ++i)
-        {
-            var newPos = Handles.FreeMoveHandle(path[i], Quaternion.identity, 0.1f, Vector3.zero, Handles.SphereHandleCap);
-            if (newPos != path[i])
-            {
-                //Undo.RecordObject(creator, "Move Point");
-                path.MovePoint(i, newPos);
-            }
-        }
+        //for (int i = 0; i < path.NumSegments; ++i)
+        //{
+        //    var points = path.GetPointsInSegment(i);
+        //
+        //    Handles.color = Color.black;
+        //    Handles.DrawLine(points[1], points[0]);
+        //    Handles.DrawLine(points[2], points[3]);
+        //
+        //    Handles.DrawBezier(points[0], points[3], points[1], points[2], Color.green, null, 2);
+        //}
+        //
+        //Handles.color = Color.red;
+        //for (int i = 0; i < path.NumPoints; ++i)
+        //{
+        //    var newPos = Handles.FreeMoveHandle(path[i], Quaternion.identity, 0.1f, Vector3.zero, Handles.SphereHandleCap);
+        //    if (newPos != path[i])
+        //    {
+        //        //Undo.RecordObject(creator, "Move Point");
+        //        path.MovePoint(i, newPos);
+        //    }
+        //}
 
         Gizmos.color = Color.green;
         for(int i = 0; i < myPoints.Length; ++i)
