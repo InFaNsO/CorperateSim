@@ -13,12 +13,19 @@ public class ProductionBuilding : MonoBehaviour
 
     public Recipe recipe = null;
 
-    [SerializeField] public Vector3 UIOffset = new Vector3(0f, 20f, 0f);
-    public Vector3 OffsetUI { get { return transform.position + transform.up * 7f; } }
+    [SerializeField] public Transform UIOffset;// = new Vector3(0f, 20f, 0f);
+    public Vector3 OffsetUI { get 
+        {
+            if (UIOffset)
+                return UIOffset.position;
+            else
+                return transform.position;
+        } 
+    }
     
     [SerializeField] public List<Recipe> RecipeBook;
-    Item OutPutSlot;
-    List<Item> InputSlots = new List<Item>();
+    public Item OutPutSlot;
+    public List<Item> InputSlots = new List<Item>();
     [SerializeField] uint currentQ = 0;
 
     [SerializeField] BuilderManager builderManager;
@@ -36,6 +43,11 @@ public class ProductionBuilding : MonoBehaviour
     float nextDispachTime = 0;
     float timeDiff = 1;
 
+    bool working = false;
+    [SerializeField] List<Animator> myAnimator = null;
+    [SerializeField] List<UnityEngine.VFX.VisualEffect> myFX = null;
+    [SerializeField] List<ParticleSystem> myParticles = null;
+
     void Start()
     {
         //ForTEsting
@@ -45,8 +57,10 @@ public class ProductionBuilding : MonoBehaviour
     void Update()
     {
         if (!recipe)
+        {
+            working = false;
             return;
-
+        }
         if(!hasPower)
         {
             //getPower
@@ -60,7 +74,16 @@ public class ProductionBuilding : MonoBehaviour
             }
         }
 
-        OutPutSlot.currentQuantity += recipe.Produce(InputSlots);
+        if (OutPutSlot.currentQuantity < OutPutSlot.maxQuantity)
+        {
+            working = true;
+            OutPutSlot.currentQuantity += recipe.Produce(InputSlots);
+        }
+        else
+            working = false;
+        if (recipe.ProduceNext < Time.time)
+            working = false;
+
         OutPutSlot.currentQuantity = (uint)Mathf.Min(OutPutSlot.maxQuantity, OutPutSlot.currentQuantity);
         currentQ = OutPutSlot.currentQuantity;
 
@@ -79,11 +102,21 @@ public class ProductionBuilding : MonoBehaviour
         }
     }
 
+
+
     private void LateUpdate()
     {
         for (int i = 0; i < inCommingResourcesToBeDestroyed.Count; ++i)
             Destroy(inCommingResourcesToBeDestroyed[i]);
         inCommingResourcesToBeDestroyed.Clear();
+
+        for (int i = 0; i < myAnimator.Count; ++i)
+            myAnimator[i].SetBool("Working", working);
+
+        for (int i = 0; i < myFX.Count; ++i)
+            myFX[i].gameObject.SetActive(working);
+        for (int i = 0; i < myParticles.Count; ++i)
+            myParticles[i].gameObject.SetActive(working);
     }
 
     public void SetRecipie(Item finalProduct)
@@ -147,8 +180,11 @@ public class ProductionBuilding : MonoBehaviour
         {
             if(recipe.Ingredients[i].item == r.item)
             {
-                InputSlots[i].currentQuantity += 1;
-                inCommingResourcesToBeDestroyed.Add(resource);
+                if (InputSlots[i].currentQuantity < InputSlots[i].maxQuantity)
+                {
+                    InputSlots[i].currentQuantity += 1;
+                    inCommingResourcesToBeDestroyed.Add(resource);
+                }
                 break;
             }
         }

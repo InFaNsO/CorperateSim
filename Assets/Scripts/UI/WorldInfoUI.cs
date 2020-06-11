@@ -10,17 +10,11 @@ public class WorldInfoUI : MonoBehaviour
 
     ProductionBuilding currentBuilding;
 
-    [System.Serializable]
-    public struct InfoData
-    {
-        public Image i;
-        public TMP_Text txt;
-    }
-    [SerializeField] List<InfoData> IngredientsImage = new List<InfoData>();
-    [SerializeField] InfoData FinalProduct;
+    [SerializeField] List<UI_Ingredient> IngredientsImage = new List<UI_Ingredient>();
+    [SerializeField] UI_Ingredient FinalProduct;
     [SerializeField] GameObject MainInfoView;
     [SerializeField] GameObject AlternateInfoView;
-
+    [SerializeField] ProgressBar ProducingNext;
 
     private void Start()
     {
@@ -57,23 +51,7 @@ public class WorldInfoUI : MonoBehaviour
         if (!currentBuilding.recipe)
             return;
 
-        for (int j = 0; j < IngredientsImage.Count; ++j)
-        {
-            if (j < currentBuilding.recipe.Ingredients.Count)
-            {
-                IngredientsImage[j].i.sprite = currentBuilding.recipe.Ingredients[j].item.icon;
-                IngredientsImage[j].i.color = Color.white;
-                IngredientsImage[j].txt.text = currentBuilding.recipe.Ingredients[j].item.name + "\\n" + currentBuilding.recipe.Ingredients[j].item.currentQuantity.ToString();
-            }
-            else
-            {
-                IngredientsImage[j].i.color = new Vector4(0f, 0f, 0f, 0f);
-                IngredientsImage[j].txt.text = "";
-            }
-        }
-
-        FinalProduct.i.sprite = currentBuilding.recipe.finalProduct.item.icon;
-        FinalProduct.txt.text = currentBuilding.recipe.finalProduct.item.name + "\\n" + currentBuilding.recipe.finalProduct.item.currentQuantity.ToString();
+        HasRecipie();
     }
 
     void HasRecipie()
@@ -82,19 +60,35 @@ public class WorldInfoUI : MonoBehaviour
         {
             if (j < currentBuilding.recipe.Ingredients.Count)
             {
-                IngredientsImage[j].i.sprite = currentBuilding.recipe.Ingredients[j].item.icon;
-                IngredientsImage[j].i.color = Color.white;
-                IngredientsImage[j].txt.text = currentBuilding.recipe.Ingredients[j].item.name;
+                IngredientsImage[j].gameObject.SetActive(true);
+                IngredientsImage[j].Icon.sprite = currentBuilding.recipe.Ingredients[j].item.icon;
+                IngredientsImage[j].Icon.color = Color.white;
+                IngredientsImage[j].Name.text = currentBuilding.recipe.Ingredients[j].item.name;
+                IngredientsImage[j].ItemCountBar.Minimum = 0;
+                IngredientsImage[j].ItemCountBar.Maximum = (int)currentBuilding.recipe.Ingredients[j].item.maxQuantity;
+                IngredientsImage[j].ItemCountBar.Current = (int)currentBuilding.InputSlots[j].currentQuantity;
+
             }
             else
             {
-                IngredientsImage[j].i.color = new Vector4(0f, 0f, 0f, 0f);
-                IngredientsImage[j].txt.text = "";
+                IngredientsImage[j].gameObject.SetActive(false);
+                IngredientsImage[j].Icon.color = new Vector4(0f, 0f, 0f, 0f);
+                IngredientsImage[j].Name.text = "";
             }
         }
 
-        FinalProduct.i.sprite = currentBuilding.recipe.finalProduct.item.icon;
-        FinalProduct.txt.text = currentBuilding.recipe.finalProduct.item.name;
+        FinalProduct.Icon.sprite = currentBuilding.recipe.finalProduct.item.icon;
+        FinalProduct.Name.text = currentBuilding.recipe.finalProduct.item.name;
+        FinalProduct.ItemCountBar.Minimum = 0;
+        //get these number from someotherplace
+        FinalProduct.ItemCountBar.Maximum = (int)currentBuilding.recipe.finalProduct.item.maxQuantity;
+        FinalProduct.ItemCountBar.Current = (int)currentBuilding.OutPutSlot.currentQuantity;
+
+        ProducingNext.Minimum = 0;
+        ProducingNext.Maximum = 100;
+        float t = (currentBuilding.recipe.ProduceNext - Time.time) / (float)currentBuilding.recipe.TimeToProduce1;
+        t = 1f - t;
+        ProducingNext.Current = (int)(t * 100f);
     }
 
     void Clear()

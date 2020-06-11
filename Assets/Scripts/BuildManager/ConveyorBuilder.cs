@@ -30,21 +30,7 @@ public class ConveyorBuilder : BuilderBase
     public override bool ParseInput(ref Ray mouseRay)
     {
         RaycastHit hit;
-        if (Physics.Raycast(mouseRay, out hit, playerRange, InputMask))
-        {
-            slot1 = hit.collider.GetComponent<ConveyorInputSlot>();
-            if (slot1.belt)
-                slot1 = null;
-            return MakeBelt();
-        }
-        else if (Physics.Raycast(mouseRay, out hit, playerRange, OutputMask))
-        {
-            slot2 = hit.collider.GetComponent<ConveyorOutputSlot>();
-            if (slot2.belt)
-                slot2 = null; 
-            return MakeBelt();
-        }
-        if(mPoleMaker.currentPole)
+        if (mPoleMaker.currentPole)
         {
             var belt = currentBelt.GetComponent<ConveyorBeltSegment>();
 
@@ -66,6 +52,22 @@ public class ConveyorBuilder : BuilderBase
 
             return true;
         }
+
+        if (Physics.Raycast(mouseRay, out hit, playerRange, InputMask))
+        {
+            slot1 = hit.collider.GetComponent<ConveyorInputSlot>();
+            if (slot1.belt)
+                slot1 = null;
+            return MakeBelt();
+        }
+        else if (Physics.Raycast(mouseRay, out hit, playerRange, OutputMask))
+        {
+            slot2 = hit.collider.GetComponent<ConveyorOutputSlot>();
+            if (slot2.belt)
+                slot2 = null; 
+            return MakeBelt();
+        }
+
         return false;
     }
 

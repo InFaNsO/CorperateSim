@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -82,10 +83,14 @@ public class Resource : MonoBehaviour
             else if (inputSlot.GetComponentInParent<Pole>())
             {
                 var pole = inputSlot.GetComponentInParent<Pole>();
-                if (pole.BeltOut)
+                if (pole.BeltOut && myCurrentBelt != pole.BeltOut)
                 {
-                    myCurrentBelt = pole.BeltOut;
-                    SetPath();
+                    if (!pole.BeltOut.HasResource())
+                    {
+                        myCurrentBelt.RemoveResourceAtIndex(pointIndex);
+                        myCurrentBelt = pole.BeltOut;
+                        SetPath();
+                    }
                 }
             }
             else if (inputSlot.GetComponentInParent<ConveyorSpliter>())

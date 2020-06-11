@@ -20,8 +20,8 @@ public class Recipe : ScriptableObject
 
     public RecipeItem finalProduct;
 
-    float ProduceNext = 0.0f;
-    uint TimeToProduce1 = 0;
+    public float ProduceNext = 0.0f;
+    public uint TimeToProduce1 = 0;
 
     public void Awake()
     {
