@@ -31,7 +31,7 @@ public class PlanetSystem : MonoBehaviour
         }
 
         currentVelocity = initialVelocity;
-        transform.localScale = new Vector3(Radius, Radius, Radius);
+        //transform.localScale = new Vector3(Radius, Radius, Radius);
     }
 
     // Start is called before the first frame update
@@ -48,7 +48,7 @@ public class PlanetSystem : MonoBehaviour
         }
 
         currentVelocity = initialVelocity;
-        transform.localScale = new Vector3(Radius, Radius, Radius);
+        //transform.localScale = new Vector3(Radius, Radius, Radius);
     }
 
     // Update is called once per frame
